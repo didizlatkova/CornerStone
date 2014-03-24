@@ -15,6 +15,6 @@ window.onload = function () {
 
     var event = new CornerStone.Events();
     window.addEventListener("mousedown", event.startDrag);
-    //canvas.addEventListener ("mousemove", drag);
+    window.addEventListener ("mousemove", event.drag);
     window.addEventListener("mouseup", event.stopLineDrag);
 };

@@ -15,31 +15,24 @@ CornerStone.Events.prototype = function () {
                 y: ev.clientY
             };
         },
-            //drag = function (ev, context) {
-            //    if (this.dragData && this.dragging) {
-            //        ev = ev || event;
-            //        context.beginPath();
-            //        context.moveTo(dragData.x, dragData.y);
-            //        context.lineTo(ev.clientX, ev.clientY);
-            //        context.lineWidth = 5;
-            //        context.strokeStyle = 'blue';
-            //        context.stroke();
-            //        dragData = {
-            //            x: ev.clientX,
-            //            y: ev.clientY
-            //        };
-            //    }
-            //},
+            drag = function (ev, context) {
+                if (this.dragData && this.dragging) {
+                    ev = ev || event;
+                    tempContext.clearRect (0, 0, 900, 700);
+                    brush.drawLine(tempContext, this.dragData.x, this.dragData.y, ev.clientX, ev.clientY); 
+                }
+            },
             stopLineDrag = function (ev) {
                 if (this.dragData) {
                     ev = ev || event;
                     brush.drawLine(context, this.dragData.x, this.dragData.y, ev.clientX, ev.clientY);
+                    this.dragging = false;
                 }
             };
 
     return {
         startDrag: startDrag,
-       // drag: drag,
+        drag: drag,
         stopLineDrag: stopLineDrag
     };
 }();
