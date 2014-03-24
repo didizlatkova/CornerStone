@@ -6,6 +6,9 @@ CornerStone.Math = function () {
 
 CornerStone.Math.prototype = function () {
     var getPointsForLine = function (x1, y1, x2, y2, n) {
+    	if (x1 == x2) {
+    		return;
+    	} else {
         var slope = (y2 - y1) / (x2 - x1);
         var b = y1 - slope * x1;
         var x = x1;
@@ -16,6 +19,7 @@ CornerStone.Math.prototype = function () {
             x = i;
             result.push([x, slope * x + b]);
         }
+       }
 
         return result;
     };

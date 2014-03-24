@@ -9,10 +9,12 @@ CornerStone.Brush.prototype = function () {
         LINE_PARTS = 1000,
         drawLine = function (ctx, x1, y1, x2, y2) {
             var points = math.getPointsForLine(x1, y1, x2, y2, LINE_PARTS);
-            for (var i = 0; i < points.length; i++) {
-                x = points[i][0];
-                y = points[i][1];
-                ctx.fillRect(x, y, 1, 1);
+            if (points) {
+            	for (var i = 0; i < points.length; i++) {
+                	x = points[i][0];
+                	y = points[i][1];
+                	ctx.fillRect(x, y, 1, 1);
+            	}
             }
         };
 
