@@ -1,5 +1,7 @@
 ﻿var CornerStone = CornerStone || {};
 var canvas, context, tempCanvas, tempContext;
+var canvasWidth = 900;
+var canvasHeight = 700;
 
 window.onload = function () {
     canvas = document.getElementById('CornerStoneCanvas'),
@@ -7,11 +9,11 @@ window.onload = function () {
 	tempCanvas = document.getElementById('tempMovementCanvas'),
     tempContext = tempCanvas.getContext('2d');
     
-    canvas.setAttribute('width', '900');
-	canvas.setAttribute('height', '700');
+    canvas.setAttribute('width', canvasWidth);
+    canvas.setAttribute('height', canvasHeight);
 	
-	tempCanvas.setAttribute('width', '900');
-	tempCanvas.setAttribute('height', '700');
+    tempCanvas.setAttribute('width', canvasWidth);
+	tempCanvas.setAttribute('height', canvasHeight);
 
     var event = new CornerStone.Events();
     window.addEventListener("mousedown", event.startDrag);

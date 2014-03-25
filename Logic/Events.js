@@ -18,12 +18,13 @@ CornerStone.Events.prototype = function () {
             drag = function (ev, context) {
                 if (this.dragData && this.dragging) {
                     ev = ev || event;
-                    tempContext.clearRect (0, 0, 900, 700);
+                    tempContext.clearRect(0, 0, canvasWidth, canvasHeight);
                     brush.drawLine(tempContext, this.dragData.x, this.dragData.y, ev.clientX, ev.clientY); 
                 }
             },
             stopLineDrag = function (ev) {
                 if (this.dragData) {
+                    tempContext.clearRect(0, 0, canvasWidth, canvasHeight);
                     ev = ev || event;
                     brush.drawLine(context, this.dragData.x, this.dragData.y, ev.clientX, ev.clientY);
                     this.dragging = false;
