@@ -8,7 +8,7 @@ CornerStone.Brush.prototype = function () {
     var math = new CornerStone.Math(),
         LINE_PARTS = 1000,
         drawLine = function (ctx, x1, y1, x2, y2) {
-            var points = math.getPointsForLine(x1, y1, x2, y2, LINE_PARTS);
+            var points = math.calcStraightLine(x1, y1, x2, y2);
             if (points) {
             	for (var i = 0; i < points.length; i++) {
                 	x = points[i][0];

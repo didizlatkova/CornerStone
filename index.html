@@ -1,14 +1,24 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+    <script src="UI/jquery-1.11.0.min.js"></script>
     <script src="Math/Math.js"></script>
     <script src="Logic/Brush.js"></script>
     <script src="Logic/Events.js"></script>
     <script src="UI/Setup.js"></script>
+    <script src="UI/Toolbox.js"></script>
     <link href="styles/style.css" rel="stylesheet"/>
     <title></title>
 </head>
 <body>
+    <div id="toolbox">
+        <img class="tool active" src="Icons/cursor.png" />
+        <img class="tool" src="Icons/point.png" />
+        <img class="tool" src="Icons/line.png" />
+        <img class="tool" src="Icons/square.png" />
+        <img class="tool" src="Icons/triangle.png" />
+        <img class="tool" src="Icons/circle.png" />
+    </div>
     <canvas id="CornerStoneCanvas" style="background-color:#E3DCCF"></canvas>
     <canvas id="tempMovementCanvas"></canvas>
 </body>
