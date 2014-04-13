@@ -3,8 +3,8 @@
 <head>
     <script src="UI/jquery-1.11.0.min.js"></script>
     <script src="Math/Math.js"></script>
-    <script src="Logic/Brush.js"></script>
-    <script src="Logic/Events.js"></script>
+    <script src="Logic/Line.js"></script>
+    <script src="Logic/Cursor.js"></script>
     <script src="UI/Setup.js"></script>
     <script src="UI/Toolbox.js"></script>
     <link href="styles/style.css" rel="stylesheet"/>
@@ -12,14 +12,14 @@
 </head>
 <body>
     <div id="toolbox">
-        <img class="tool active" src="Icons/cursor.png" />
+        <img class="tool active" id="cursor" src="Icons/cursor.png" />
         <img class="tool" src="Icons/point.png" />
-        <img class="tool" src="Icons/line.png" />
+        <img class="tool" id="line" src="Icons/line.png" />
         <img class="tool" src="Icons/square.png" />
         <img class="tool" src="Icons/triangle.png" />
         <img class="tool" src="Icons/circle.png" />
     </div>
-    <canvas id="CornerStoneCanvas" style="background-color:#E3DCCF"></canvas>
+    <canvas id="cornerStoneCanvas" style="background-color:#E3DCCF"></canvas>
     <canvas id="tempMovementCanvas"></canvas>
 </body>
 </html>
