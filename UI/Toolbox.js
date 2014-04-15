@@ -1,11 +1,14 @@
 ﻿/// <reference path="../Logic/Cursor.js" />
 /// <reference path="../Logic/Line.js" />
+/// <reference path="../Logic/Square.js" />
 
 var CornerStone = CornerStone || {};
 
 CornerStone.toolbox = function () {
-    var line = new CornerStone.Line();
-    var cursor = new CornerStone.Cursor();
+    var line = new CornerStone.Line(),
+        cursor = new CornerStone.Cursor(),
+        rectangle = new CornerStone.Rectangle();
+
 
     var removeEvents = function () {
         $(CornerStone.tempCanvas).unbind('mousedown');
@@ -24,6 +27,11 @@ CornerStone.toolbox = function () {
                 $(CornerStone.tempCanvas).bind('mousedown', cursor.startDrag);
                 $(CornerStone.tempCanvas).bind('mousemove', cursor.drag);
                 $(CornerStone.tempCanvas).bind('mouseup', cursor.stopDrag);
+                break;
+            case "rectangle":
+                $(CornerStone.tempCanvas).bind('mousedown', rectangle.startDrag);
+                $(CornerStone.tempCanvas).bind('mousemove', rectangle.drag);
+                $(CornerStone.tempCanvas).bind('mouseup', rectangle.stopDrag);
                 break;
         }
     };
