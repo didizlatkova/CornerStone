@@ -1,7 +1,0 @@
-C:\Users\Didi\Desktop\CornerStone\CornerStoneUML\bin\Debug\CornerStoneUML.Results.dgml
-C:\Users\Didi\Desktop\CornerStone\CornerStoneUML\obj\Debug\Structure.layerdiagram.dgql
-C:\Users\Didi\Desktop\CornerStone\CornerStoneUML\obj\Debug\Structure.layerdiagram.dgml
-C:\Users\Didi\Desktop\CornerStone\CornerStoneUML\obj\Debug\Initial.dgml
-C:\Users\Didi\Desktop\CornerStone\CornerStoneUML\obj\Debug\Initial.dgml.back
-C:\Users\Didi\Desktop\CornerStone\CornerStoneUML\obj\Debug\Validate.dgql
-C:\Users\Didi\Desktop\CornerStone\CornerStoneUML\obj\Debug\Validated.dgml
