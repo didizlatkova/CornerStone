@@ -52,6 +52,7 @@ CornerStone.Line.prototype = function () {
     return {
         startDrag: startDrag,
         drag: drag,
-        stopDrag: stopDrag
+        stopDrag: stopDrag,
+        drawLine: drawLine
     };
 }();
