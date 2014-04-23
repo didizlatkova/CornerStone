@@ -34,6 +34,7 @@ CornerStone.toolbox = function () {
                 $(CornerStone.tempCanvas).bind('mouseup', line.stopDrag);
                 break;
             case "cursor":
+                $(CornerStone.tempCanvas).bind('click', cursor.click);
                 $(CornerStone.tempCanvas).bind('mousedown', cursor.startDrag);
                 $(CornerStone.tempCanvas).bind('mousemove', cursor.drag);
                 $(CornerStone.tempCanvas).bind('mouseup', cursor.stopDrag);
@@ -50,6 +51,7 @@ CornerStone.toolbox = function () {
                 break;
             case "triangle":
                 $(CornerStone.tempCanvas).bind('click', triangle.click);
+                $(CornerStone.tempCanvas).bind('mousemove', triangle.move);
                 break;
         }
     };

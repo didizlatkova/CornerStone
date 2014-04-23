@@ -20,6 +20,7 @@ CornerStone.Line.prototype = function () {
                     ctx.fillRect(x, y, 1, 1);
                 }
             }
+            return points;
         },
 
         startDrag = function (ev) {
@@ -43,7 +44,12 @@ CornerStone.Line.prototype = function () {
             if (this.dragData) {
                 CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
                 ev = ev || event;
-                drawLine(CornerStone.context, this.dragData.x, this.dragData.y, ev.clientX, ev.clientY);
+                var points = drawLine(CornerStone.context, this.dragData.x, this.dragData.y, ev.clientX, ev.clientY),
+                    startPoint = new CornerStone.PointConstructor(this.dragData.x, this.dragData.y),
+                    endPoint = new CornerStone.PointConstructor(ev.clientX, ev.clientY);
+                elements.points.push(startPoint);
+                elements.points.push(endPoint);
+                elements.lines.push(new CornerStone.LineConstructor(startPoint, endPoint, points));
                 this.dragging = false;
             }
             this.dragData = null;

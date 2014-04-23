@@ -21,6 +21,7 @@ CornerStone.Circle.prototype = function () {
                 ctx.fillRect(x, y, 1, 1);
             }
         }
+        return points;
     },
 
     startDrag = function (ev) {
@@ -44,7 +45,13 @@ CornerStone.Circle.prototype = function () {
         if (this.dragData) {
             CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
             ev = ev || event;
-            drawCircle(CornerStone.context, this.dragData.x, this.dragData.y, ev.clientX, ev.clientY);
+            var points = drawCircle(CornerStone.context, this.dragData.x, this.dragData.y, ev.clientX, ev.clientY),
+                o = new CornerStone.PointConstructor(this.dragData.x, this.dragData.y),
+                r = math.calcDistance(this.dragData.x, this.dragData.y, ev.clientX, ev.clientY);
+
+            elements.points.push(o);
+            elements.circles.push(new CornerStone.CircleConstructor(o, r, points));
+
             this.dragging = false;
         }
         this.dragData = null;

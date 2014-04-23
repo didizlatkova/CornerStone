@@ -2,8 +2,15 @@
 
 var CornerStone = CornerStone || {};
 
-var CANVAS_WIDTH = 900;
-var CANVAS_HEIGHT = 700;
+var CANVAS_WIDTH = 900,
+    CANVAS_HEIGHT = 700,
+    elements = {
+    points: [],
+    lines: [],
+    rectangles: [],
+    circles: [],
+    triangles: []
+};
 
 window.onload = function () {
     CornerStone.canvas = document.getElementById('cornerStoneCanvas'),

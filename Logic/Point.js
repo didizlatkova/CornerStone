@@ -25,6 +25,7 @@ CornerStone.Point.prototype = function () {
     click = function (ev) {
         ev = ev || event;
         drawPoint(CornerStone.context, ev.clientX, ev.clientY);
+        elements.points.push(new CornerStone.PointConstructor(ev.clientX, ev.clientY));
     };
 
     return {

@@ -13,10 +13,12 @@ CornerStone.Rectangle.prototype = function () {
         line = new CornerStone.Line(),
 
     drawRectangle = function (context, x1, y1, x2, y2) {
-        line.drawLine(context, x1, y1, x2, y1);
-        line.drawLine(context, x2, y1, x2, y2);
-        line.drawLine(context, x2, y2, x1, y2);
-        line.drawLine(context, x1, y2, x1, y1);
+        var points = [];
+        points = points.concat(line.drawLine(context, x1, y1, x2, y1));
+        points = points.concat(line.drawLine(context, x2, y1, x2, y2));
+        points = points.concat(line.drawLine(context, x2, y2, x1, y2));
+        points = points.concat(line.drawLine(context, x1, y2, x1, y1));
+        return points;
     },
 
     startDrag = function (ev) {
@@ -40,7 +42,13 @@ CornerStone.Rectangle.prototype = function () {
         if (this.dragData) {
             CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
             ev = ev || event;
-            drawRectangle(CornerStone.context, this.dragData.x, this.dragData.y, ev.clientX, ev.clientY);
+            var points = drawRectangle(CornerStone.context, this.dragData.x, this.dragData.y, ev.clientX, ev.clientY),
+                start = new CornerStone.PointConstructor(this.dragData.x, this.dragData.y),
+                end = new CornerStone.PointConstructor(ev.clientX, ev.clientY);
+            elements.points.push(start);
+            elements.points.push(end);
+            elements.rectangles.push(new CornerStone.RectangleConstructor(start, end, points));
+
             this.dragging = false;
         }
         this.dragData = null;
