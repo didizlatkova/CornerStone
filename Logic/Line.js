@@ -2,9 +2,14 @@
 
 var CornerStone = CornerStone || {};
 
-CornerStone.Line = function () {
+CornerStone.Line = function (start, end, points) {
     var dragData = null,
         dragging = false;
+
+    this.startPoint = start;
+    this.endPoint = end;
+    this.points = points;
+    this.state = false;
 };
 
 CornerStone.Line.prototype = function () {
@@ -12,6 +17,13 @@ CornerStone.Line.prototype = function () {
         LINE_PARTS = 1000,
 
         drawLine = function (ctx, x1, y1, x2, y2) {
+            if (x1 == undefined) {
+                x1 = this.startPoint.x;
+                y1 = this.startPoint.y;
+                x2 = this.endPoint.x;
+                y2 = this.endPoint.y;
+            }
+
             var points = math.calcStraightLine(x1, y1, x2, y2);
             if (points) {
                 for (var i = 0; i < points.length; i++) {
@@ -45,11 +57,13 @@ CornerStone.Line.prototype = function () {
                 CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
                 ev = ev || event;
                 var points = drawLine(CornerStone.context, this.dragData.x, this.dragData.y, ev.clientX, ev.clientY),
-                    startPoint = new CornerStone.PointConstructor(this.dragData.x, this.dragData.y),
-                    endPoint = new CornerStone.PointConstructor(ev.clientX, ev.clientY);
-                elements.points.push(startPoint);
-                elements.points.push(endPoint);
-                elements.lines.push(new CornerStone.LineConstructor(startPoint, endPoint, points));
+                    startPoint = new CornerStone.Point(this.dragData.x, this.dragData.y),
+                    endPoint = new CornerStone.Point(ev.clientX, ev.clientY);
+                this.startPoint = startPoint;
+                this.endPoint = endPoint;
+                definingPoints.push(startPoint);
+                definingPoints.push(endPoint);
+                elements.lines.push(new CornerStone.Line(startPoint, endPoint, points));
                 this.dragging = false;
             }
             this.dragData = null;
@@ -59,6 +73,6 @@ CornerStone.Line.prototype = function () {
         startDrag: startDrag,
         drag: drag,
         stopDrag: stopDrag,
-        drawLine: drawLine
+        draw: drawLine
     };
 }();

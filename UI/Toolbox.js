@@ -56,9 +56,30 @@ CornerStone.toolbox = function () {
         }
     };
 
+    redrawCanvas = function () {
+        CornerStone.context.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        for (var collection in elements) {
+            for (var e in elements[collection]) {
+                var element = elements[collection][e];
+                for (var p in element.points) {
+                    element.draw(CornerStone.context);
+                }
+            };
+        };
+    };
+
+    removeSelection = function () {
+        if (selectedElement != null) {
+            selectedElement.draw(CornerStone.context);
+            CornerStone.selection = false;
+            selectedElement = null;
+        }
+    }
+
     return {
         removeEvents: removeEvents,
-        addEvents: addEvents
+        addEvents: addEvents,
+        removeSelection : removeSelection
     };
 }();
 
@@ -71,6 +92,32 @@ $(function () {
         var id = data[0].id;
         CornerStone.toolbox.removeEvents();
         CornerStone.toolbox.addEvents(id);
+
+        if (CornerStone.selection) {
+            // remove current selection
+            CornerStone.toolbox.removeSelection();
+        }
+    });
+
+    $(document).click(function (ev) {
+        if (CornerStone.selection) {
+            var shouldRemoveSelection = true;
+
+            // check if current click is on an element currently being selected
+            for (var p in selectedElement.points) {
+                var point = selectedElement.points[p];
+                if (Math.abs(point[0] - ev.clientX) < 3 && Math.abs(point[1] - ev.clientY) < 3) {
+                    // it is - do not remove selection
+                    shouldRemoveSelection = false;
+                    break;
+                };
+            }
+
+            // remove current selection
+            if (shouldRemoveSelection) {
+                CornerStone.toolbox.removeSelection();
+            }
+        }
     });
 });
 

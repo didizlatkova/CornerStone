@@ -3,9 +3,14 @@
 
 var CornerStone = CornerStone || {};
 
-CornerStone.Rectangle = function () {
+CornerStone.Rectangle = function (start, end, points) {
     var dragData = null,
         dragging = false;
+
+    this.startPoint = start;
+    this.endPoint = end;
+    this.points = points;
+    this.state = false;
 };
 
 CornerStone.Rectangle.prototype = function () {
@@ -13,11 +18,18 @@ CornerStone.Rectangle.prototype = function () {
         line = new CornerStone.Line(),
 
     drawRectangle = function (context, x1, y1, x2, y2) {
+        if (x1 == undefined) {
+            x1 = this.startPoint.x;
+            y1 = this.startPoint.y;
+            x2 = this.endPoint.x;
+            y2 = this.endPoint.y;
+        }
+
         var points = [];
-        points = points.concat(line.drawLine(context, x1, y1, x2, y1));
-        points = points.concat(line.drawLine(context, x2, y1, x2, y2));
-        points = points.concat(line.drawLine(context, x2, y2, x1, y2));
-        points = points.concat(line.drawLine(context, x1, y2, x1, y1));
+        points = points.concat(line.draw(context, x1, y1, x2, y1));
+        points = points.concat(line.draw(context, x2, y1, x2, y2));
+        points = points.concat(line.draw(context, x2, y2, x1, y2));
+        points = points.concat(line.draw(context, x1, y2, x1, y1));
         return points;
     },
 
@@ -43,11 +55,13 @@ CornerStone.Rectangle.prototype = function () {
             CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
             ev = ev || event;
             var points = drawRectangle(CornerStone.context, this.dragData.x, this.dragData.y, ev.clientX, ev.clientY),
-                start = new CornerStone.PointConstructor(this.dragData.x, this.dragData.y),
-                end = new CornerStone.PointConstructor(ev.clientX, ev.clientY);
-            elements.points.push(start);
-            elements.points.push(end);
-            elements.rectangles.push(new CornerStone.RectangleConstructor(start, end, points));
+                start = new CornerStone.Point(this.dragData.x, this.dragData.y),
+                end = new CornerStone.Point(ev.clientX, ev.clientY);
+            definingPoints.push(start);
+            definingPoints.push(end);
+            this.startPoint = start;
+            this.endPoint = end;
+            elements.rectangles.push(new CornerStone.Rectangle(start, end, points));
 
             this.dragging = false;
         }
@@ -57,6 +71,7 @@ CornerStone.Rectangle.prototype = function () {
     return {
         startDrag: startDrag,
         drag: drag,
-        stopDrag: stopDrag
+        stopDrag: stopDrag,
+        draw: drawRectangle
     };
 }();

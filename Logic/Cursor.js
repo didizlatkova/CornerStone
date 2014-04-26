@@ -21,24 +21,29 @@ CornerStone.Cursor.prototype = function () {
     };
 
     click = function (ev) {
-        console.log(checkSelection(ev.clientX, ev.clientY));
+        makeSelection(ev.clientX, ev.clientY);
     };
 
-    function checkSelection(x, y) {
-        for (var colection in elements) {
-            for (var e in elements[colection]) {
-                var element = elements[colection][e];
+    makeSelection = function (x, y) {
+        for (var collection in elements) {
+            for (var e in elements[collection]) {
+                var element = elements[collection][e];
                 for (var p in element.points) {
                     var point = element.points[p];
                     if (Math.abs(point[0] - x) < 3 && Math.abs(point[1] - y) < 3) {
                         element.state = true;
-                        return element;
+                        CornerStone.toolbox.removeSelection();
+                        CornerStone.context.fillStyle = "#FF0000";
+                        element.draw(CornerStone.context);
+                        CornerStone.context.fillStyle = "#000000";
+                        CornerStone.selection = true;
+                        selectedElement = element;
                     };
                 }
             };
         };
     };
-
+    
     return {
         startDrag: startDrag,
         drag: drag,

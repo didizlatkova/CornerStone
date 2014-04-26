@@ -4,15 +4,18 @@ var CornerStone = CornerStone || {};
 
 var CANVAS_WIDTH = 900,
     CANVAS_HEIGHT = 700,
+    selectedElement = null,
+    definingPoints = [],
     elements = {
     points: [],
     lines: [],
     rectangles: [],
     circles: [],
-    triangles: []
+    triangles: [],
 };
 
 window.onload = function () {
+    CornerStone.selection = false;
     CornerStone.canvas = document.getElementById('cornerStoneCanvas'),
     CornerStone.context = CornerStone.canvas.getContext('2d'),
 	CornerStone.tempCanvas = document.getElementById('tempMovementCanvas'),

@@ -2,8 +2,11 @@
 
 var CornerStone = CornerStone || {};
 
-CornerStone.Point = function () {
-
+CornerStone.Point = function (x, y) {
+    this.x = x;
+    this.y = y;
+    this.points = [[x, y]];
+    this.state = false;
 };
 
 CornerStone.Point.prototype = function () {
@@ -11,6 +14,10 @@ CornerStone.Point.prototype = function () {
         POINT_RADIUS = 2;
 
     drawPoint = function (ctx, x1, y1) {
+        if (x1 == undefined) {
+            x1 = this.x;
+            y1 = this.y;
+        }
         var points = math.calcFilledCircle(x1, y1, POINT_RADIUS);
 
         if (points) {
@@ -24,12 +31,14 @@ CornerStone.Point.prototype = function () {
 
     click = function (ev) {
         ev = ev || event;
+        this.x = ev.clientX;
+        this.y = ev.clientY;
         drawPoint(CornerStone.context, ev.clientX, ev.clientY);
-        elements.points.push(new CornerStone.PointConstructor(ev.clientX, ev.clientY));
+        elements.points.push(new CornerStone.Point(ev.clientX, ev.clientY));
     };
 
     return {
         click: click,
-        drawPoint: drawPoint
+        draw: drawPoint
     };
 }();

@@ -4,8 +4,12 @@
 
 var CornerStone = CornerStone || {};
 
-CornerStone.Triangle = function () {
-
+CornerStone.Triangle = function (a, b, c, points) {
+    this.first = a;
+    this.second = b;
+    this.third = c;
+    this.points = points;
+    this.state = false;
 };
 
 CornerStone.Triangle.prototype = function () {
@@ -16,17 +20,23 @@ CornerStone.Triangle.prototype = function () {
         dragData = new Array();
 
     drawTriangle = function (ctx) {
+        if (dragData[0] == undefined) {
+            dragData.push([this.first.x, this.first.y]);
+            dragData.push([this.second.x, this.second.y]);
+            dragData.push([this.third.x, this.third.y]);
+        }
+
         var points = [];
-        points = points.concat(line.drawLine(ctx, dragData[0][0], dragData[0][1], dragData[1][0], dragData[1][1]));
-        points = points.concat(line.drawLine(ctx, dragData[1][0], dragData[1][1], dragData[2][0], dragData[2][1]));
-        points = points.concat(line.drawLine(ctx, dragData[0][0], dragData[0][1], dragData[2][0], dragData[2][1]));
+        points = points.concat(line.draw(ctx, dragData[0][0], dragData[0][1], dragData[1][0], dragData[1][1]));
+        points = points.concat(line.draw(ctx, dragData[1][0], dragData[1][1], dragData[2][0], dragData[2][1]));
+        points = points.concat(line.draw(ctx, dragData[0][0], dragData[0][1], dragData[2][0], dragData[2][1]));
         return points;
     },
 
     drawTempTriangle = function (ctx, x, y) {
-        line.drawLine(ctx, dragData[0][0], dragData[0][1], dragData[1][0], dragData[1][1]);
-        line.drawLine(ctx, dragData[1][0], dragData[1][1], x, y);
-        line.drawLine(ctx, dragData[0][0], dragData[0][1], x, y);
+        line.draw(ctx, dragData[0][0], dragData[0][1], dragData[1][0], dragData[1][1]);
+        line.draw(ctx, dragData[1][0], dragData[1][1], x, y);
+        line.draw(ctx, dragData[0][0], dragData[0][1], x, y);
     },
 
     drawHeight = function (ctx) {
@@ -41,23 +51,26 @@ CornerStone.Triangle.prototype = function () {
         var u = ((dragData[2][0] - dragData[0][0]) * xDelta + (dragData[2][1] - dragData[0][1]) * yDelta) / (xDelta * xDelta + yDelta * yDelta),
             closestPoint = [dragData[0][0] + u * xDelta, dragData[0][1] + u * yDelta];
 
-        line.drawLine(ctx, Math.round(closestPoint[0]), Math.round(closestPoint[1]) , dragData[2][0], dragData[2][1]);
+        line.draw(ctx, Math.round(closestPoint[0]), Math.round(closestPoint[1]) , dragData[2][0], dragData[2][1]);
     },
 
     click = function (ev) {
         ev = ev || event;
-        point.drawPoint(CornerStone.context, ev.clientX, ev.clientY);
+        point.draw(CornerStone.context, ev.clientX, ev.clientY);
         dragData.push([ev.clientX, ev.clientY]);
         clickCount++;
         if (clickCount == 3) {
             var points = drawTriangle(CornerStone.context),
-                a = new CornerStone.PointConstructor(dragData[0][0], dragData[0][1]),
-                b = new CornerStone.PointConstructor(dragData[1][0], dragData[1][1]),
-                c = new CornerStone.PointConstructor(dragData[2][0], dragData[2][1]);
-            elements.points.push(a);
-            elements.points.push(b);
-            elements.points.push(c);
-            elements.triangles.push(new CornerStone.TriangleConstructor(a, b, c, points));
+                a = new CornerStone.Point(dragData[0][0], dragData[0][1]),
+                b = new CornerStone.Point(dragData[1][0], dragData[1][1]),
+                c = new CornerStone.Point(dragData[2][0], dragData[2][1]);
+            definingPoints.push(a);
+            definingPoints.push(b);
+            definingPoints.push(c);
+            elements.triangles.push(new CornerStone.Triangle(a, b, c, points));
+            this.first = a;
+            this.second = b;
+            this.third = c
 
             drawHeight(CornerStone.context);
 
@@ -71,7 +84,7 @@ CornerStone.Triangle.prototype = function () {
         ev = ev || event;
         if (clickCount == 1) {
             CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-            line.drawLine(CornerStone.tempContext, dragData[0][0], dragData[0][1], ev.clientX, ev.clientY);
+            line.draw(CornerStone.tempContext, dragData[0][0], dragData[0][1], ev.clientX, ev.clientY);
         } else if (clickCount == 2) {
             CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
             drawTempTriangle(CornerStone.tempContext, ev.clientX, ev.clientY);
@@ -80,6 +93,7 @@ CornerStone.Triangle.prototype = function () {
 
     return {
         click: click,
-        move: move
+        move: move,
+        draw : drawTriangle
     };
 }();

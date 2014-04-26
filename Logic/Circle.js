@@ -2,16 +2,29 @@
 
 var CornerStone = CornerStone || {};
 
-CornerStone.Circle = function () {
+CornerStone.Circle = function (start, end, points) {
     var dragData = null,
         dragging = false;
+
+    this.center = start;
+    this.radius = end;
+    this.points = points;
+    this.state = false;
 };
 
 CornerStone.Circle.prototype = function () {
     var math = new CornerStone.Math(),
 
     drawCircle = function (ctx, x1, y1, x2, y2) {
-        var radius = math.calcDistance(x1, y1, x2, y2);
+        if (x1 == undefined) {
+            x1 = this.center.x;
+            y1 = this.center.y;
+            var radius = this.radius;
+        }
+        else {
+            var radius = math.calcDistance(x1, y1, x2, y2);
+        }
+
         var points = math.calcCircle(x1, y1, radius);
 
         if (points) {
@@ -46,11 +59,14 @@ CornerStone.Circle.prototype = function () {
             CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
             ev = ev || event;
             var points = drawCircle(CornerStone.context, this.dragData.x, this.dragData.y, ev.clientX, ev.clientY),
-                o = new CornerStone.PointConstructor(this.dragData.x, this.dragData.y),
+                o = new CornerStone.Point(this.dragData.x, this.dragData.y),
                 r = math.calcDistance(this.dragData.x, this.dragData.y, ev.clientX, ev.clientY);
 
-            elements.points.push(o);
-            elements.circles.push(new CornerStone.CircleConstructor(o, r, points));
+            definingPoints.push(o);
+            elements.circles.push(new CornerStone.Circle(o, r, points));
+
+            this.center = o;
+            this.radius = r;
 
             this.dragging = false;
         }
@@ -60,6 +76,7 @@ CornerStone.Circle.prototype = function () {
     return {
         startDrag: startDrag,
         drag: drag,
-        stopDrag: stopDrag
+        stopDrag: stopDrag,
+        draw : drawCircle
     };
 }();
