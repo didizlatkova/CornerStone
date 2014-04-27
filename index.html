@@ -1,7 +1,9 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
     <script src="UI/jquery-1.11.0.min.js"></script>
+    <script src="ContextMenu/contextMenu.js"></script>
     <script src="Math/Math.js"></script>
     <script src="Logic/Constructors.js"></script>
     <script src="Logic/Line.js"></script>
@@ -9,13 +11,15 @@
     <script src="Logic/Circle.js"></script>
     <script src="Logic/Point.js"></script>
     <script src="Logic/Rectangle.js"></script>
-    <script src="Logic/Triangle.js"></script>
+    <script src="Logic/Triangle.js" charset="windows-1251"></script>
     <script src="UI/Setup.js"></script>
     <script src="UI/Toolbox.js"></script>
+
     <link href="styles/style.css" rel="stylesheet" />
+    <link href="ContextMenu/contextMenu.css" rel="stylesheet" />
     <title></title>
 </head>
-<body oncontextmenu="return false;">
+<body>
     <div id="toolbox">
         <img class="tool active" id="cursor" src="Icons/cursor.png" />
         <img class="tool" id="point" src="Icons/point.png" />

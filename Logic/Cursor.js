@@ -36,8 +36,13 @@ CornerStone.Cursor.prototype = function () {
                         CornerStone.context.fillStyle = "#FF0000";
                         element.draw(CornerStone.context);
                         CornerStone.context.fillStyle = "#000000";
+
+                        // activate context menu for selected element
+                        element.activateContextMenu();
+
+                        // set selection vars
                         CornerStone.selection = true;
-                        selectedElement = element;
+                        selectedElement = element;                        
                     };
                 }
             };

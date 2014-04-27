@@ -1,4 +1,5 @@
 ﻿/// <reference path="../Logic/Cursor.js" />
+/// <reference path="../ContextMenu/contextMenu.js" />
 
 var CornerStone = CornerStone || {};
 
@@ -14,8 +15,10 @@ var CANVAS_WIDTH = 900,
     triangles: [],
 };
 
-window.onload = function () {
+$(function () {
     CornerStone.selection = false;
+    CornerStone.contextmenu = false;
+
     CornerStone.canvas = document.getElementById('cornerStoneCanvas'),
     CornerStone.context = CornerStone.canvas.getContext('2d'),
 	CornerStone.tempCanvas = document.getElementById('tempMovementCanvas'),
@@ -31,4 +34,8 @@ window.onload = function () {
     $(CornerStone.tempCanvas).bind('mousedown', cursor.startDrag);
     $(CornerStone.tempCanvas).bind('mousemove', cursor.drag);
     $(CornerStone.tempCanvas).bind('mouseup', cursor.stopDrag);
-};
+
+    function asd() {
+        alert('i am add button')
+    }    
+});

@@ -29,6 +29,11 @@ CornerStone.Point.prototype = function () {
         }
     },
 
+    activateContextMenu = function () {
+        // no context menu for points
+        CornerStone.contextmenu = false;
+    },
+
     click = function (ev) {
         ev = ev || event;
         this.x = ev.clientX;
@@ -39,6 +44,7 @@ CornerStone.Point.prototype = function () {
 
     return {
         click: click,
-        draw: drawPoint
+        draw: drawPoint,
+        activateContextMenu: activateContextMenu
     };
 }();

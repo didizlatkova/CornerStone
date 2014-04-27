@@ -33,6 +33,11 @@ CornerStone.Rectangle.prototype = function () {
         return points;
     },
 
+    activateContextMenu = function () {
+        // no context menu for rectangles (for now)
+        CornerStone.contextmenu = false;
+    }
+
     startDrag = function (ev) {
         ev = ev || event;
         this.dragging = true;
@@ -72,6 +77,7 @@ CornerStone.Rectangle.prototype = function () {
         startDrag: startDrag,
         drag: drag,
         stopDrag: stopDrag,
-        draw: drawRectangle
+        draw: drawRectangle,
+        activateContextMenu: activateContextMenu
     };
 }();

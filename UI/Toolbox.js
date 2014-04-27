@@ -73,13 +73,19 @@ CornerStone.toolbox = function () {
             selectedElement.draw(CornerStone.context);
             CornerStone.selection = false;
             selectedElement = null;
+
+            if (CornerStone.contextmenu) {
+                // remove context menu
+                $('body').contextMenu('destroy');
+                CornerStone.contextmenu = false;
+            }
         }
     }
 
     return {
         removeEvents: removeEvents,
         addEvents: addEvents,
-        removeSelection : removeSelection
+        removeSelection: removeSelection
     };
 }();
 

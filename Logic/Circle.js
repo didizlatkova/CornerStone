@@ -37,6 +37,11 @@ CornerStone.Circle.prototype = function () {
         return points;
     },
 
+    activateContextMenu = function () {
+        // no context menu for circles (for now)
+        CornerStone.contextmenu = false;
+    },
+
     startDrag = function (ev) {
         ev = ev || event;
         this.dragging = true;
@@ -77,6 +82,7 @@ CornerStone.Circle.prototype = function () {
         startDrag: startDrag,
         drag: drag,
         stopDrag: stopDrag,
-        draw : drawCircle
+        draw: drawCircle,
+        activateContextMenu: activateContextMenu
     };
 }();

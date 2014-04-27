@@ -35,44 +35,50 @@ CornerStone.Line.prototype = function () {
             return points;
         },
 
-        startDrag = function (ev) {
-            ev = ev || event;
-            this.dragging = true;
-            this.dragData = {
-                x: ev.clientX,
-                y: ev.clientY
-            };
-        },
+        activateContextMenu = function () {
+            // no context menu for lines
+            CornerStone.contextmenu = false;
+        }
 
-        drag = function (ev, context) {
-            if (this.dragData && this.dragging) {
-                ev = ev || event;
-                CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-                drawLine(CornerStone.tempContext, this.dragData.x, this.dragData.y, ev.clientX, ev.clientY);
-            }
-        },
-
-        stopDrag = function (ev) {
-            if (this.dragData) {
-                CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-                ev = ev || event;
-                var points = drawLine(CornerStone.context, this.dragData.x, this.dragData.y, ev.clientX, ev.clientY),
-                    startPoint = new CornerStone.Point(this.dragData.x, this.dragData.y),
-                    endPoint = new CornerStone.Point(ev.clientX, ev.clientY);
-                this.startPoint = startPoint;
-                this.endPoint = endPoint;
-                definingPoints.push(startPoint);
-                definingPoints.push(endPoint);
-                elements.lines.push(new CornerStone.Line(startPoint, endPoint, points));
-                this.dragging = false;
-            }
-            this.dragData = null;
+    startDrag = function (ev) {
+        ev = ev || event;
+        this.dragging = true;
+        this.dragData = {
+            x: ev.clientX,
+            y: ev.clientY
         };
+    },
+
+    drag = function (ev, context) {
+        if (this.dragData && this.dragging) {
+            ev = ev || event;
+            CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+            drawLine(CornerStone.tempContext, this.dragData.x, this.dragData.y, ev.clientX, ev.clientY);
+        }
+    },
+
+    stopDrag = function (ev) {
+        if (this.dragData) {
+            CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+            ev = ev || event;
+            var points = drawLine(CornerStone.context, this.dragData.x, this.dragData.y, ev.clientX, ev.clientY),
+                startPoint = new CornerStone.Point(this.dragData.x, this.dragData.y),
+                endPoint = new CornerStone.Point(ev.clientX, ev.clientY);
+            this.startPoint = startPoint;
+            this.endPoint = endPoint;
+            definingPoints.push(startPoint);
+            definingPoints.push(endPoint);
+            elements.lines.push(new CornerStone.Line(startPoint, endPoint, points));
+            this.dragging = false;
+        }
+        this.dragData = null;
+    };
 
     return {
         startDrag: startDrag,
         drag: drag,
         stopDrag: stopDrag,
-        draw: drawLine
+        draw: drawLine,
+        activateContextMenu: activateContextMenu
     };
 }();
