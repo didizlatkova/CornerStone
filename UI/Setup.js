@@ -13,7 +13,8 @@ var CANVAS_WIDTH = 900,
     rectangles: [],
     circles: [],
     triangles: [],
-    curves: []
+    bezierCurves: [],
+    simpleCurves: [],
 };
 
 $(function () {
@@ -34,9 +35,5 @@ $(function () {
     var cursor = new CornerStone.Cursor();
     $(CornerStone.tempCanvas).bind('mousedown', cursor.startDrag);
     $(CornerStone.tempCanvas).bind('mousemove', cursor.drag);
-    $(CornerStone.tempCanvas).bind('mouseup', cursor.stopDrag);
-
-    function asd() {
-        alert('i am add button')
-    }    
+    $(CornerStone.tempCanvas).bind('mouseup', cursor.stopDrag);   
 });

@@ -14,7 +14,8 @@ CornerStone.toolbox = function () {
         circle = new CornerStone.Circle(),
         point = new CornerStone.Point(),
         triangle = new CornerStone.Triangle(),
-        curve = new CornerStone.BezierCurve();
+        bezier = new CornerStone.BezierCurve(),
+        curve = new CornerStone.SimpleCurve();
 
 
     var removeEvents = function () {
@@ -56,7 +57,13 @@ CornerStone.toolbox = function () {
                 break;
             case "curve":
                 $(CornerStone.tempCanvas).bind('click', curve.click);
-                $(CornerStone.tempCanvas).bind('mousemove', curve.move);
+                $(CornerStone.tempCanvas).bind('mousedown', curve.startDrag);
+                $(CornerStone.tempCanvas).bind('mousemove', curve.drag);
+                $(CornerStone.tempCanvas).bind('mouseup', curve.stopDrag);
+                break;
+            case "bezier":
+                $(CornerStone.tempCanvas).bind('click', bezier.click);
+                $(CornerStone.tempCanvas).bind('mousemove', bezier.move);
                 break;
         }
     };
