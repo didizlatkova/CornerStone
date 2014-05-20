@@ -21,12 +21,15 @@ CornerStone.BezierCurve.prototype = function () {
     
     drawCasteljau = function (ctx, anchors) {
         var points = [];
-        for (var t = 0; t <= 1; t += 0.001) { 
+        for (var t = 0; t <= 1; t += 0.01) { 
             var tempPoint = getCasteljauPoint(anchors.length-1, 0, t, anchors);
-            //console.log(tempPoint);
-            points = points.concat(tempPoint);
+            points.push(tempPoint);
             ctx.fillRect(tempPoint.x, tempPoint.y, 1, 1);
+            if (points.length > 1) {
+                line.draw(ctx, tempPoint.x, tempPoint.y, points[points.length-2].x, points[points.length-2].y);
+            };
         }
+        line.draw(ctx, points[points.length-1].x, points[points.length-1].y, anchors[anchors.length-1].x, anchors[anchors.length-1].y);
         return points;    
     }
 
@@ -41,13 +44,17 @@ CornerStone.BezierCurve.prototype = function () {
 
     click = function (ev) {
         ev = ev || event;
-        point.draw(CornerStone.context, ev.clientX, ev.clientY);
         dragData.push([ev.clientX, ev.clientY]);
         clickCount++;
-        if (clickCount == 3) {
+        if (clickCount == 1) {
+            point.draw(CornerStone.tempContext, dragData[0][0], dragData[0][1]);
+        } else if (clickCount == 2) {
+            point.draw(CornerStone.tempContext, dragData[0][0], dragData[0][1]);
+            point.draw(CornerStone.tempContext, dragData[1][0], dragData[1][1]);
+        } else if (clickCount == 3) {
             var a = new CornerStone.Point(dragData[0][0], dragData[0][1]),
-                b = new CornerStone.Point(dragData[1][0], dragData[1][1]),
-                c = new CornerStone.Point(dragData[2][0], dragData[2][1]),
+                c = new CornerStone.Point(dragData[1][0], dragData[1][1]),
+                b = new CornerStone.Point(dragData[2][0], dragData[2][1]),
                 anchors = [a,b,c],
                 points = drawCasteljau(CornerStone.context, anchors);
 
@@ -59,9 +66,10 @@ CornerStone.BezierCurve.prototype = function () {
             this.second = b;
             this.third = c;
 
-            elements.curves.push(new CornerStone.BezierCurve(a, b, c, points));
+            elements.bezierCurves.push(new CornerStone.BezierCurve(a, b, c, points));
 
             clickCount = 0;
+            dragData = new Array();
             CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         }
     };
@@ -70,11 +78,17 @@ CornerStone.BezierCurve.prototype = function () {
         ev = ev || event;
         if (clickCount == 1) {
             CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+            point.draw(CornerStone.tempContext, dragData[0][0], dragData[0][1]);
             line.draw(CornerStone.tempContext, dragData[0][0], dragData[0][1], ev.clientX, ev.clientY);
         } else if (clickCount == 2) {
+            var a = new CornerStone.Point(dragData[0][0], dragData[0][1]),
+                c = new CornerStone.Point(dragData[1][0], dragData[1][1]),
+                b = new CornerStone.Point(ev.clientX, ev.clientY),
+                anchors = [a,b,c];
             CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-            line.draw(CornerStone.tempContext, dragData[0][0], dragData[0][1], dragData[1][0], dragData[1][1]);
-            line.draw(CornerStone.tempContext, dragData[1][0], dragData[1][1], ev.clientX, ev.clientY);
+            point.draw(CornerStone.tempContext, dragData[0][0], dragData[0][1]);
+            point.draw(CornerStone.tempContext, dragData[1][0], dragData[1][1]);
+            drawCasteljau(CornerStone.tempContext, anchors);
         };
     };
 
