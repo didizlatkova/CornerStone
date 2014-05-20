@@ -13,6 +13,7 @@ var CANVAS_WIDTH = 900,
     rectangles: [],
     circles: [],
     triangles: [],
+    curves: []
 };
 
 $(function () {
