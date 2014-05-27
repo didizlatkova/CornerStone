@@ -124,11 +124,55 @@ CornerStone.Math.prototype = function () {
         return Math.sqrt(Math.pow(y2 - y1, 2) + Math.pow(x2 - x1, 2));
     };
 
+    var factorial = function (n) {
+        var result = 1;
+        for (var i = 1; i <= n; i++) {
+            result *= i;
+        }
+
+        return result;
+    };
+
+    var calcHermite = function (x, n, count) {
+        if (f[points[x]] == f[points[n]]) {
+            if (count == 0) {
+                return f[points[x]] / factorial(count);
+            }
+            else {
+                result.push(fprim[points[x]] / factorial(count));
+                return fprim[points[x]] / factorial(count);
+            }
+        }
+        else {
+            var diff = calcHermite(x + 1, n, count - 1) - calcHermite(x, n - 1, count - 1);
+            result.push(diff);
+            return diff;
+        }
+    };
+
+    var calcSimpleCurve = function (x0, y0, x1, y1, x2, y2) {
+        f = new Array();
+        fprim = new Array();
+
+        f[0] = -1;
+        f[1] = 0;
+
+        fprim[0] = -2;
+        fprim[1] = 10;
+
+        points = [0, 0, 1, 1];
+        result = [f[0]];
+
+        calcHermite(0, 3, 3);
+        return [result[0], result[5], result[6], result[7]];
+    };
+
     return {
         calcDistance: calcDistance,
         getPointsForLine: getPointsForLine,
         calcStraightLine: calcStraightLine,
         calcCircle: calcCircle,
-        calcFilledCircle: calcFilledCircle
+        calcFilledCircle: calcFilledCircle,
+        calcSimpleCurve: calcSimpleCurve
     };
 }();

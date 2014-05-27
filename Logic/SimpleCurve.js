@@ -88,7 +88,9 @@ CornerStone.SimpleCurve.prototype = function () {
         if (lineDrawn) {
             if (dragStopped) {
                 ev = ev || event;
-                point.draw(CornerStone.context, ev.clientX, ev.clientY);
+                point.draw(CornerStone.context, ev.clientX, ev.clientY);	
+				math.calcSimpleLine();
+				
                 lineDrawn = false;
                 dragStopped = false;
             }
