@@ -144,7 +144,7 @@ CornerStone.Math.prototype = function () {
             }
         }
         else {
-            var diff = calcHermite(x + 1, n, count - 1) - calcHermite(x, n - 1, count - 1);
+            var diff = (calcHermite(x + 1, n, count - 1) - calcHermite(x, n - 1, count - 1)) / (points[n] - points[x]);
             result.push(diff);
             return diff;
         }
@@ -153,18 +153,35 @@ CornerStone.Math.prototype = function () {
     var calcSimpleCurve = function (x0, y0, x1, y1, x2, y2) {
         f = new Array();
         fprim = new Array();
+        
+        f[x1] = y1;
+        f[x2] = y2;
+                
+        var a = y0 - y1;
+        var b = x0 - x1;
+        var c = y0 - y2;
+        var d = x2 - x0;
 
-        f[0] = -1;
-        f[1] = 0;
-
-        fprim[0] = -2;
-        fprim[1] = 10;
-
-        points = [0, 0, 1, 1];
-        result = [f[0]];
+        fprim[x1] = a / b;
+        fprim[x2] = -c / d;
+                
+        points = [x1, x1, x2, x2];
+        result = [f[x1]];
 
         calcHermite(0, 3, 3);
-        return [result[0], result[5], result[6], result[7]];
+
+        var resultArr = [];
+        var interval = (Math.max(x1, x2) - Math.min(x1, x2)) / 1000;
+        for (var i = Math.min(x1, x2) ; i <= Math.max(x1, x2) ; i += interval) {
+            x = i;
+            resultArr.push([x, calcCurvePoints(result[0], result[5], result[6], result[7], x, x1, x2)]);
+        }
+
+        return resultArr;
+    };
+
+    var calcCurvePoints = function (x1, x2, x3, x4, x, startX1, startX2) {
+        return x1 + x2 * (x - startX1) + x3 * (x - startX1) * (x - startX1) + x4 * (x - startX1) * (x - startX1) * (x - startX2);
     };
 
     return {

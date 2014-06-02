@@ -88,9 +88,17 @@ CornerStone.SimpleCurve.prototype = function () {
         if (lineDrawn) {
             if (dragStopped) {
                 ev = ev || event;
-                point.draw(CornerStone.context, ev.clientX, ev.clientY);	
-				math.calcSimpleLine();
-				
+                curvePoint = new CornerStone.Point(ev.clientX, ev.clientY),
+                // point.draw(CornerStone.context, ev.clientX, ev.clientY);
+                this.curvePoint = curvePoint;
+                var points = math.calcSimpleCurve(this.curvePoint.x, this.curvePoint.y, this.startPoint.x, this.startPoint.y, this.endPoint.x, this.endPoint.y);
+
+      //          var points = math.calcSimpleCurve(this.curvePoint.x, this.curvePoint.y, this.startPoint.x, this.startPoint.y, this.endPoint.x, this.endPoint.y);
+                for (var i = 0; i < points.length; i++) {
+                    x = points[i][0];
+                    y = points[i][1];
+                    CornerStone.context.fillRect(x, y, 1, 1);
+                }
                 lineDrawn = false;
                 dragStopped = false;
             }
