@@ -124,9 +124,10 @@ $(function () {
             // check if current click is on an element currently being selected
             for (var p in selectedElement.points) {
                 var point = selectedElement.points[p];
-                if (Math.abs(point[0] - ev.clientX) < 3 && Math.abs(point[1] - ev.clientY) < 3) {
+                if ((Math.abs(point[0] - ev.clientX) < 3 && Math.abs(point[1] - ev.clientY) < 3) || (Math.abs(point.x - ev.clientX) < 3 && Math.abs(point.y - ev.clientY) < 3)) {
                     // it is - do not remove selection
                     shouldRemoveSelection = false;
+                    console.log("I kid you not");
                     break;
                 };
             }

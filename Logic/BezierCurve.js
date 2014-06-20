@@ -20,17 +20,23 @@ CornerStone.BezierCurve.prototype = function () {
         dragData = new Array();
     
     drawCasteljau = function (ctx, anchors) {
-        var points = [];
+        var points = [], allPoints = [];
+        if (anchors == undefined) {
+            for (var i = 0; i < this.points.length; i++) {
+                ctx.fillRect(this.points[i][0], this.points[i][1], 1, 1);
+            };
+        } else {
         for (var t = 0; t <= 1; t += 0.01) { 
             var tempPoint = getCasteljauPoint(anchors.length-1, 0, t, anchors);
             points.push(tempPoint);
             ctx.fillRect(tempPoint.x, tempPoint.y, 1, 1);
             if (points.length > 1) {
-                line.draw(ctx, tempPoint.x, tempPoint.y, points[points.length-2].x, points[points.length-2].y);
+                allPoints = allPoints.concat(line.draw(ctx, tempPoint.x, tempPoint.y, points[points.length-2].x, points[points.length-2].y));
             };
         }
-        line.draw(ctx, points[points.length-1].x, points[points.length-1].y, anchors[anchors.length-1].x, anchors[anchors.length-1].y);
-        return points;    
+        allPoints = allPoints.concat(line.draw(ctx, points[points.length-1].x, points[points.length-1].y, anchors[anchors.length-1].x, anchors[anchors.length-1].y));
+        return allPoints;  
+        }  
     }
 
     getCasteljauPoint = function(r, i, t, anchors) { 
