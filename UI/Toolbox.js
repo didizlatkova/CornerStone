@@ -11,6 +11,7 @@ CornerStone.toolbox = function () {
     var line = new CornerStone.Line(),
         cursor = new CornerStone.Cursor(),
         rectangle = new CornerStone.Rectangle(),
+        square = new CornerStone.Square(),
         circle = new CornerStone.Circle(),
         point = new CornerStone.Point(),
         triangle = new CornerStone.Triangle(),
@@ -45,6 +46,11 @@ CornerStone.toolbox = function () {
                 $(CornerStone.tempCanvas).bind('mousedown', rectangle.startDrag);
                 $(CornerStone.tempCanvas).bind('mousemove', rectangle.drag);
                 $(CornerStone.tempCanvas).bind('mouseup', rectangle.stopDrag);
+                break;
+            case "square":
+                $(CornerStone.tempCanvas).bind('mousedown', square.startDrag);
+                $(CornerStone.tempCanvas).bind('mousemove', square.drag);
+                $(CornerStone.tempCanvas).bind('mouseup', square.stopDrag);
                 break;
             case "circle":
                 $(CornerStone.tempCanvas).bind('mousedown', circle.startDrag);
