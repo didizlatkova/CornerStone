@@ -57,9 +57,9 @@ CornerStone.toolbox = function () {
                 break;
             case "curve":
                 $(CornerStone.tempCanvas).bind('click', curve.click);
-                $(CornerStone.tempCanvas).bind('mousedown', curve.startDrag);
-                $(CornerStone.tempCanvas).bind('mousemove', curve.drag);
-                $(CornerStone.tempCanvas).bind('mouseup', curve.stopDrag);
+               // $(CornerStone.tempCanvas).bind('mousedown', curve.startDrag);
+                $(CornerStone.tempCanvas).bind('mousemove', curve.move);
+           //     $(CornerStone.tempCanvas).bind('mouseup', curve.stopDrag);
                 break;
             case "bezier":
                 $(CornerStone.tempCanvas).bind('click', bezier.click);

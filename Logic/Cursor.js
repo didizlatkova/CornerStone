@@ -38,7 +38,9 @@ CornerStone.Cursor.prototype = function () {
                         CornerStone.context.fillStyle = "#000000";
 
                         // activate context menu for selected element
-                        element.activateContextMenu();
+                        if (element.activateContextMenu) {
+                            element.activateContextMenu();
+                        };
 
                         // set selection vars
                         CornerStone.selection = true;
