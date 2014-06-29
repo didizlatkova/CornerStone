@@ -16,6 +16,7 @@ CornerStone.toolbox = function () {
         point = new CornerStone.Point(),
         triangle = new CornerStone.Triangle(),
         parallelogram = new CornerStone.Parallelogram(),
+        rhombus = new CornerStone.Rhombus(),
         bezier = new CornerStone.BezierCurve(),
         curve = new CornerStone.SimpleCurve();
 
@@ -65,6 +66,10 @@ CornerStone.toolbox = function () {
             case "parallelogram":
                 $(CornerStone.tempCanvas).bind('click', parallelogram.click);
                 $(CornerStone.tempCanvas).bind('mousemove', parallelogram.move);
+                break;
+            case "rhombus":
+                $(CornerStone.tempCanvas).bind('click', rhombus.click);
+                $(CornerStone.tempCanvas).bind('mousemove', rhombus.move);
                 break;
             case "curve":
                 $(CornerStone.tempCanvas).bind('click', curve.click);
