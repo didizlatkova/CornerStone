@@ -4,22 +4,26 @@ canvas {
     top: 0px;
 }
 
-#toolbox {
+.toolbox {
     position: fixed;
     left: 910px;
     top: 10px;
     width: 72px;
 }
 
-    #toolbox img.tool {
+    .toolbox img.tool {
         float: left;
         cursor: pointer;
     }
 
-        #toolbox img.tool.active {
+        .toolbox img.tool.active {
             opacity: 0.6;
         }
 
-        #toolbox img.tool:hover {
+        .toolbox img.tool:hover {
             opacity: 0.6;
         }
+
+#second-toolbox {
+    left:1000px;
+}
