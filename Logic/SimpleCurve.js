@@ -16,9 +16,8 @@ CornerStone.SimpleCurve = function (start, end, curve, points) {
 CornerStone.SimpleCurve.prototype = function () {
     var math = new CornerStone.Math(),
         LINE_PARTS = 1000,
-        lineDrawn = false,
-        dragStopped = false,
-        point = new CornerStone.Point();
+        clickCount = 0,
+        point = new CornerStone.Point();		
 
     drawLine = function (ctx, x1, y1, x2, y2) {
         if (x1 == undefined) {
@@ -65,6 +64,15 @@ CornerStone.SimpleCurve.prototype = function () {
             CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
             drawLine(CornerStone.tempContext, this.dragData.x, this.dragData.y, ev.clientX, ev.clientY);
         }
+		else if (lineDrawn) {
+		CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+            var points = math.calcSimpleCurve(ev.clientX, ev.clientY, this.startPoint.x, this.startPoint.y, this.endPoint.x, this.endPoint.y);
+                for (var i = 0; i < points.length; i++) {
+                    x = points[i][0];
+                    y = points[i][1];
+                    CornerStone.tempContext.fillRect(x, y, 1, 1);
+                }
+        };
     },
 
     stopDrag = function (ev) {
@@ -83,29 +91,52 @@ CornerStone.SimpleCurve.prototype = function () {
         }
         this.dragData = null;
     };
-
-    click = function (ev) {
-        if (lineDrawn) {
-            if (dragStopped) {
-                ev = ev || event;
-                curvePoint = new CornerStone.Point(ev.clientX, ev.clientY),
-                // point.draw(CornerStone.context, ev.clientX, ev.clientY);
-                this.curvePoint = curvePoint;
-                var points = math.calcSimpleCurve(this.curvePoint.x, this.curvePoint.y, this.startPoint.x, this.startPoint.y, this.endPoint.x, this.endPoint.y);
-
-      //          var points = math.calcSimpleCurve(this.curvePoint.x, this.curvePoint.y, this.startPoint.x, this.startPoint.y, this.endPoint.x, this.endPoint.y);
+	
+	move = function (ev) {
+        ev = ev || event;		
+		if (clickCount == 1) {
+            CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+            point.draw(CornerStone.tempContext, this.startPoint.x, this.startPoint.y);
+            drawLine(CornerStone.tempContext, this.startPoint.x, this.startPoint.y, ev.clientX, ev.clientY);
+        }
+		else if (clickCount == 2) {
+		CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+		point.draw(CornerStone.tempContext, this.startPoint.x, this.startPoint.y);
+            point.draw(CornerStone.tempContext, this.endPoint.x, this.endPoint.y);
+            var points = math.calcSimpleCurve(ev.clientX, ev.clientY, this.startPoint.x, this.startPoint.y, this.endPoint.x, this.endPoint.y);
                 for (var i = 0; i < points.length; i++) {
                     x = points[i][0];
                     y = points[i][1];
+                    CornerStone.tempContext.fillRect(x, y, 1, 1);
+                }
+        };
+    };
+
+    click = function (ev) {
+		ev = ev || event;
+     //   dragData.push([ev.clientX, ev.clientY]);
+        clickCount++;
+        if (clickCount == 1) {
+			this.startPoint = new CornerStone.Point(ev.clientX, ev.clientY);
+            point.draw(CornerStone.tempContext, this.startPoint.x, this.startPoint.y);
+        } else if (clickCount == 2) {
+			this.endPoint = new CornerStone.Point(ev.clientX, ev.clientY);
+            point.draw(CornerStone.tempContext, this.startPoint.x, this.startPoint.y);
+            point.draw(CornerStone.tempContext, this.endPoint.x, this.endPoint.y);
+			drawLine(CornerStone.tempContext, this.startPoint.x, this.startPoint.y, ev.clientX, ev.clientY);
+        } else if (clickCount == 3) {
+            this.curvePoint = new CornerStone.Point(ev.clientX, ev.clientY);
+                var points = math.calcSimpleCurve(this.curvePoint.x, this.curvePoint.y, this.startPoint.x, this.startPoint.y, this.endPoint.x, this.endPoint.y);
+                for (var i = 0; i < points.length; i++) {
+                    x = points[i][0];
+                    y = points[i][1];					
                     CornerStone.context.fillRect(x, y, 1, 1);
                 }
-                lineDrawn = false;
-                dragStopped = false;
-            }
-            else {
-                dragStopped = true;
-            }
-        }        
+
+            clickCount = 0;
+            CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        }
+           
     };
 
     return {
@@ -114,6 +145,7 @@ CornerStone.SimpleCurve.prototype = function () {
         stopDrag: stopDrag,
         draw: drawLine,
         click: click,
-        activateContextMenu: activateContextMenu
+        activateContextMenu: activateContextMenu,
+		move: move
     };
 }();
