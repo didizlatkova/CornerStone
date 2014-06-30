@@ -14,6 +14,8 @@ var CANVAS_WIDTH = 900,
     squares: [],
     circles: [],
     triangles: [],
+    parallelograms: [],
+    rhombus: [],
     bezierCurves: [],
     simpleCurves: [],
 };

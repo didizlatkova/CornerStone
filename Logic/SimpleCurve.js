@@ -112,6 +112,7 @@ CornerStone.SimpleCurve.prototype = function () {
                     x = points[i][0];
                     y = points[i][1];
                 }
+                drawLine(CornerStone.tempContext, Math.floor(x), Math.floor(y), this.endPoint.x, this.endPoint.y);
             }
         };
     };
@@ -139,6 +140,7 @@ CornerStone.SimpleCurve.prototype = function () {
                     x = points[i][0];
                     y = points[i][1];
                 }
+                drawLine(CornerStone.tempContext, Math.floor(x), Math.floor(y), this.endPoint.x, this.endPoint.y);
 
                 clickCount = 0;
                 CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
