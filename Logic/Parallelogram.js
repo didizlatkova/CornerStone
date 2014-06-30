@@ -18,7 +18,7 @@ CornerStone.Parallelogram.prototype = function () {
         line = new CornerStone.Line(),
         point = new CornerStone.Point(),
         clickCount = 0,
-        dragData = new Array();
+        dragData = new Array()
 
     drawParallelogram = function (ctx) {
         if (dragData[0] == undefined) {
@@ -47,7 +47,25 @@ CornerStone.Parallelogram.prototype = function () {
     },
 
     activateContextMenu = function () {
-        CornerStone.contextmenu = false;
+        CornerStone.contextmenu = true;
+        var that = this;
+
+        var menu = [{
+            name: 'начертай / диагонал',
+            fun: function () {
+                drawRightDiagonal.call(that, CornerStone.context);
+                $('body').contextMenu('close');
+            }
+        }, {
+            name: 'начертай \\ диагонал',
+            fun: function () {
+                drawLeftDiagonal.call(that, CornerStone.context);
+                $('body').contextMenu('close');
+            }
+        }
+        ];
+
+        $('body').contextMenu(menu, { triggerOn: 'contextmenu' });
     },
 
     click = function (ev) {
@@ -100,7 +118,23 @@ CornerStone.Parallelogram.prototype = function () {
             x: x3 - x2 + x1,
             y: y3 - y2 + y1
         }
-    };
+    },
+
+    drawRightDiagonal = function (ctx) {
+        var x1 = this.second.x;
+        var y1 = this.second.y;
+        var x2 = this.forth.x;
+        var y2 = this.forth.y;
+        line.draw(ctx, x1, y1, x2, y2);
+    },
+
+    drawLeftDiagonal = function (ctx) {
+        var x1 = this.first.x;
+        var y1 = this.first.y;
+        var x2 = this.third.x;
+        var y2 = this.third.y;
+        line.draw(ctx, x1, y1, x2, y2);
+    }
 
     return {
         click: click,
