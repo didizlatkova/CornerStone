@@ -82,24 +82,18 @@ CornerStone.Triangle.prototype = function () {
 
         var menu = [{
             name: 'начертай височина',
-            // img: 'images/create.png',
-            //  title: 'create button',
             fun: function () {
                 drawHeight.call(that, CornerStone.context);
                 $('body').contextMenu('close');
             }
         }, {
             name: 'начертай медиана',
-            //  img: 'images/update.png',
-            //  title: 'update button',
             fun: function () {
                 drawMedian.call(that, CornerStone.context);
                 $('body').contextMenu('close');
             }
         }, {
             name: 'начертай ъглополовяща',
-            //    img: 'images/delete.png',
-           // title: 'create button',
             fun: function () {
                 drawBisector.call(that, CornerStone.context);
                 $('body').contextMenu('close');

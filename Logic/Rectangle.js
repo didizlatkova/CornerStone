@@ -34,8 +34,25 @@ CornerStone.Rectangle.prototype = function () {
     },
 
     activateContextMenu = function () {
-        // no context menu for rectangles (for now)
-        CornerStone.contextmenu = false;
+        CornerStone.contextmenu = true;
+        var that = this;
+
+        var menu = [{
+            name: 'начертай / диагонал',
+            fun: function () {
+                drawRightDiagonal.call(that, CornerStone.context);
+                $('body').contextMenu('close');
+            }
+        }, {
+            name: 'начертай \\ диагонал',
+            fun: function () {
+                drawLeftDiagonal.call(that, CornerStone.context);
+                $('body').contextMenu('close');
+            }
+        }
+        ];
+
+        $('body').contextMenu(menu, { triggerOn: 'contextmenu' });
     }
 
     startDrag = function (ev) {
@@ -72,6 +89,22 @@ CornerStone.Rectangle.prototype = function () {
         }
         this.dragData = null;
     };
+
+    drawRightDiagonal = function (ctx) {
+        var x1 = this.startPoint.x;
+        var y1 = this.startPoint.y;
+        var x2 = this.endPoint.x;
+        var y2 = this.endPoint.y;
+        line.draw(ctx, x1, y2, x2, y1);
+    }
+
+    drawLeftDiagonal = function (ctx) {
+        var x1 = this.startPoint.x;
+        var y1 = this.startPoint.y;
+        var x2 = this.endPoint.x;
+        var y2 = this.endPoint.y;
+        line.draw(ctx, x1, y1, x2, y2);
+    }
 
     return {
         startDrag: startDrag,

@@ -34,8 +34,25 @@ CornerStone.Square.prototype = function () {
     },
 
     activateContextMenu = function () {
-        // no context menu for Squares (for now)
-        CornerStone.contextmenu = false;
+        CornerStone.contextmenu = true;
+        var that = this;
+
+        var menu = [{
+            name: 'начертай / диагонал',
+            fun: function () {
+                drawRightDiagonal.call(that, CornerStone.context);
+                $('body').contextMenu('close');
+            }
+        }, {
+            name: 'начертай \\ диагонал',
+            fun: function () {
+                drawLeftDiagonal.call(that, CornerStone.context);
+                $('body').contextMenu('close');
+            }
+        }
+        ];
+
+        $('body').contextMenu(menu, { triggerOn: 'contextmenu' });
     }
 
     startDrag = function (ev) {
@@ -76,17 +93,33 @@ CornerStone.Square.prototype = function () {
     };
 
     getSecondPoint = function (x1, y1, x2, y2) {
-        if(Math.abs(x1-x2) < Math.abs(y1-y2)) {
+        if (Math.abs(x1 - x2) < Math.abs(y1 - y2)) {
             return {
                 x: x2,
-                y: y1 < y2 ? y1 + Math.abs(x1-x2) : y1 - Math.abs(x1-x2)
+                y: y1 < y2 ? y1 + Math.abs(x1 - x2) : y1 - Math.abs(x1 - x2)
             }
         } else {
             return {
-                x: x1 < x2 ? x1 + Math.abs(y1-y2) : x1 - Math.abs(y1-y2),
+                x: x1 < x2 ? x1 + Math.abs(y1 - y2) : x1 - Math.abs(y1 - y2),
                 y: y2
             }
         }
+    }
+
+    drawRightDiagonal = function (ctx) {
+        var x1 = this.startPoint.x;
+        var y1 = this.startPoint.y;
+        var x2 = this.endPoint.x;
+        var y2 = this.endPoint.y;
+        line.draw(ctx, x1, y2, x2, y1);
+    }
+
+    drawLeftDiagonal = function (ctx) {
+        var x1 = this.startPoint.x;
+        var y1 = this.startPoint.y;
+        var x2 = this.endPoint.x;
+        var y2 = this.endPoint.y;
+        line.draw(ctx, x1, y1, x2, y2);
     }
 
     return {
