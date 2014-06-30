@@ -1,4 +1,5 @@
 ﻿/// <reference path="Line.js" />
+/// <reference path="Circle.js" />
 /// <reference path="../Math/Math.js" />
 
 var CornerStone = CornerStone || {};
@@ -16,6 +17,7 @@ CornerStone.Rectangle = function (start, end, points) {
 CornerStone.Rectangle.prototype = function () {
     var math = new CornerStone.Math(),
         line = new CornerStone.Line(),
+        circle = new CornerStone.Circle()
 
     drawRectangle = function (context, x1, y1, x2, y2) {
         if (x1 == undefined) {
@@ -49,11 +51,16 @@ CornerStone.Rectangle.prototype = function () {
                 drawLeftDiagonal.call(that, CornerStone.context);
                 $('body').contextMenu('close');
             }
-        }
-        ];
+        }, {
+            name: 'начертай описана окръжност',
+            fun: function () {
+                drawOutsideCircle.call(that, CornerStone.context);
+                $('body').contextMenu('close');
+            }
+        }];
 
         $('body').contextMenu(menu, { triggerOn: 'contextmenu' });
-    }
+    },
 
     startDrag = function (ev) {
         ev = ev || event;
@@ -88,7 +95,7 @@ CornerStone.Rectangle.prototype = function () {
             this.dragging = false;
         }
         this.dragData = null;
-    };
+    },
 
     drawRightDiagonal = function (ctx) {
         var x1 = this.startPoint.x;
@@ -96,7 +103,7 @@ CornerStone.Rectangle.prototype = function () {
         var x2 = this.endPoint.x;
         var y2 = this.endPoint.y;
         line.draw(ctx, x1, y2, x2, y1);
-    }
+    },
 
     drawLeftDiagonal = function (ctx) {
         var x1 = this.startPoint.x;
@@ -104,6 +111,14 @@ CornerStone.Rectangle.prototype = function () {
         var x2 = this.endPoint.x;
         var y2 = this.endPoint.y;
         line.draw(ctx, x1, y1, x2, y2);
+    },
+
+    drawOutsideCircle = function (ctx) {
+        var x1 = this.startPoint.x;
+        var y1 = this.startPoint.y;
+        var x2 = this.endPoint.x;
+        var y2 = this.endPoint.y;
+        circle.draw(ctx, (x1 + x2) / 2, (y1 + y2) / 2, x1, y1);
     }
 
     return {

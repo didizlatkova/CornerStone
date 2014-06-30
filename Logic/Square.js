@@ -1,5 +1,6 @@
 /// <reference path="Line.js" />
 /// <reference path="../Math/Math.js" />
+/// <reference path="Circle.js" />
 
 var CornerStone = CornerStone || {};
 
@@ -16,6 +17,7 @@ CornerStone.Square = function (start, end, points) {
 CornerStone.Square.prototype = function () {
     var math = new CornerStone.Math(),
         line = new CornerStone.Line(),
+        circle = new CornerStone.Circle()
 
     drawSquare = function (context, x1, y1, x2, y2) {
         if (x1 == undefined) {
@@ -47,6 +49,18 @@ CornerStone.Square.prototype = function () {
             name: 'начертай \\ диагонал',
             fun: function () {
                 drawLeftDiagonal.call(that, CornerStone.context);
+                $('body').contextMenu('close');
+            }
+        }, {
+            name: 'начертай вписана окръжност',
+            fun: function () {
+                drawInsideCircle.call(that, CornerStone.context);
+                $('body').contextMenu('close');
+            }
+        }, {
+            name: 'начертай описана окръжност',
+            fun: function () {
+                drawOutsideCircle.call(that, CornerStone.context);
                 $('body').contextMenu('close');
             }
         }
@@ -90,7 +104,7 @@ CornerStone.Square.prototype = function () {
             this.dragging = false;
         }
         this.dragData = null;
-    };
+    },
 
     getSecondPoint = function (x1, y1, x2, y2) {
         if (Math.abs(x1 - x2) < Math.abs(y1 - y2)) {
@@ -104,7 +118,7 @@ CornerStone.Square.prototype = function () {
                 y: y2
             }
         }
-    }
+    },
 
     drawRightDiagonal = function (ctx) {
         var x1 = this.startPoint.x;
@@ -112,7 +126,7 @@ CornerStone.Square.prototype = function () {
         var x2 = this.endPoint.x;
         var y2 = this.endPoint.y;
         line.draw(ctx, x1, y2, x2, y1);
-    }
+    },
 
     drawLeftDiagonal = function (ctx) {
         var x1 = this.startPoint.x;
@@ -120,6 +134,22 @@ CornerStone.Square.prototype = function () {
         var x2 = this.endPoint.x;
         var y2 = this.endPoint.y;
         line.draw(ctx, x1, y1, x2, y2);
+    },
+
+    drawInsideCircle = function (ctx) {
+        var x1 = this.startPoint.x;
+        var y1 = this.startPoint.y;
+        var x2 = this.endPoint.x;
+        var y2 = this.endPoint.y;
+        circle.draw(ctx, (x1 + x2) / 2, (y1 + y2) / 2, (x1 + x2) / 2, y1);
+    },
+
+    drawOutsideCircle = function (ctx) {
+        var x1 = this.startPoint.x;
+        var y1 = this.startPoint.y;
+        var x2 = this.endPoint.x;
+        var y2 = this.endPoint.y;
+        circle.draw(ctx, (x1 + x2) / 2, (y1 + y2) / 2, x1, y1);
     }
 
     return {
