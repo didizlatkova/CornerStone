@@ -7,6 +7,7 @@
     <script src="Math/Math.js"></script>
     <script src="Logic/Constructors.js"></script>
     <script src="Logic/Line.js"></script>
+    <script src="Logic/Drawing.js"></script>
     <script src="Logic/Cursor.js"></script>
     <script src="Logic/Circle.js" charset="windows-1251"></script>
     <script src="Logic/Point.js"></script>
@@ -27,20 +28,21 @@
 </head>
 <body>
     <div class="toolbox">
-        <img class="tool active" id="cursor" src="Icons/cursor.png" />
-        <img class="tool" id="point" src="Icons/point.png" />
-        <img class="tool" id="line" src="Icons/line.png" />
-        <img class="tool" id="rectangle" src="Icons/rectangle.png" />
-        <img class="tool" id="square" src="Icons/square.png" />
-        <img class="tool" id="triangle" src="Icons/triangle.png" />
+        <img class="tool active" id="cursor" src="Icons/cursor.png" title="Курсор" />
+        <img class="tool" id="point" src="Icons/point.png" title="Точка" />
+        <img class="tool" id="line" src="Icons/line.png" title="Отсечка" />
+        <img class="tool" id="rectangle" src="Icons/rectangle.png" title="Правоъгълник" />
+        <img class="tool" id="square" src="Icons/square.png" title="Квадрат" />
+        <img class="tool" id="triangle" src="Icons/triangle.png" title="Триъгълник" />
+        <img class="tool" id="drawing" src="Icons/drawing.png" title="Свободно чертаене" />
     </div>
     <div class="toolbox" id="second-toolbox">
-        <img class="tool" id="parallelogram" src="Icons/parallelogram.png" />
-        <img class="tool" id="rhombus" src="Icons/rhombus.png" />
-        <img class="tool" id="trapezoid" src="Icons/trapezoid.png" />
-        <img class="tool" id="circle" src="Icons/circle.png" />
-        <img class="tool" id="bezier" src="Icons/bezier.png" />
-        <img class="tool" id="curve" src="Icons/curve.png" />
+        <img class="tool" id="parallelogram" src="Icons/parallelogram.png" title="Успоредник" />
+        <img class="tool" id="rhombus" src="Icons/rhombus.png" title="Ромб" />
+        <img class="tool" id="trapezoid" src="Icons/trapezoid.png" title="Трапец" />
+        <img class="tool" id="circle" src="Icons/circle.png" title="Окръжност" />
+        <img class="tool" id="bezier" src="Icons/bezier.png" title="Крива на Безие" />
+        <img class="tool" id="curve" src="Icons/curve.png" title="Друга крива" />
     </div>
     <canvas id="cornerStoneCanvas" style="background-color: #E3DCCF"></canvas>
     <canvas id="tempMovementCanvas"></canvas>

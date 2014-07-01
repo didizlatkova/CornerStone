@@ -9,6 +9,7 @@ var CornerStone = CornerStone || {};
 
 CornerStone.toolbox = function () {
     var line = new CornerStone.Line(),
+        drawing = new CornerStone.Drawing(),
         cursor = new CornerStone.Cursor(),
         rectangle = new CornerStone.Rectangle(),
         square = new CornerStone.Square(),
@@ -38,6 +39,11 @@ CornerStone.toolbox = function () {
                 $(CornerStone.tempCanvas).bind('mousedown', line.startDrag);
                 $(CornerStone.tempCanvas).bind('mousemove', line.drag);
                 $(CornerStone.tempCanvas).bind('mouseup', line.stopDrag);
+                break;
+            case "drawing":
+                $(CornerStone.tempCanvas).bind('mousedown', drawing.startDrag);
+                $(CornerStone.tempCanvas).bind('mousemove', drawing.drag);
+                $(CornerStone.tempCanvas).bind('mouseup', drawing.stopDrag);
                 break;
             case "cursor":
                 $(CornerStone.tempCanvas).bind('click', cursor.click);
@@ -78,9 +84,7 @@ CornerStone.toolbox = function () {
                 break;
             case "curve":
                 $(CornerStone.tempCanvas).bind('click', curve.click);
-               // $(CornerStone.tempCanvas).bind('mousedown', curve.startDrag);
                 $(CornerStone.tempCanvas).bind('mousemove', curve.move);
-           //     $(CornerStone.tempCanvas).bind('mouseup', curve.stopDrag);
                 break;
             case "bezier":
                 $(CornerStone.tempCanvas).bind('click', bezier.click);
