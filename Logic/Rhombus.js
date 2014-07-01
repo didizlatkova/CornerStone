@@ -19,7 +19,7 @@ CornerStone.Rhombus.prototype = function () {
         point = new CornerStone.Point(),
         clickCount = 0,
         dragData = new Array(),
-        circle = new CornerStone.Circle()
+        circle = new CornerStone.Circle(),
 
     drawRhombus = function (ctx) {
         if (dragData[0] == undefined) {
@@ -122,7 +122,7 @@ CornerStone.Rhombus.prototype = function () {
             clickCount = 0;
             CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         }
-    };
+    },
 
     move = function (ev) {
         ev = ev || event;
@@ -145,7 +145,7 @@ CornerStone.Rhombus.prototype = function () {
             };
             drawTempRhombus(CornerStone.tempContext, tempPoint[0], tempPoint[1]);
         };
-    };
+    },
 
     calcLastPoint = function (x1, y1, x2, y2, x3, y3) {
         return {
@@ -153,6 +153,7 @@ CornerStone.Rhombus.prototype = function () {
             y: y3 - y2 + y1
         }
     },
+    
     drawRightDiagonal = function (ctx) {
         var x1 = this.second.x;
         var y1 = this.second.y;

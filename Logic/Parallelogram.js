@@ -18,7 +18,7 @@ CornerStone.Parallelogram.prototype = function () {
         line = new CornerStone.Line(),
         point = new CornerStone.Point(),
         clickCount = 0,
-        dragData = new Array()
+        dragData = new Array(),
 
     drawParallelogram = function (ctx) {
         if (dragData[0] == undefined) {
@@ -100,7 +100,7 @@ CornerStone.Parallelogram.prototype = function () {
             clickCount = 0;
             CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         }
-    };
+    },
 
     move = function (ev) {
         ev = ev || event;
@@ -111,7 +111,7 @@ CornerStone.Parallelogram.prototype = function () {
             CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
             drawTempParallelogram(CornerStone.tempContext, ev.clientX, ev.clientY);
         };
-    };
+    },
 
     calcLastPoint = function (x1, y1, x2, y2, x3, y3) {
         return {
