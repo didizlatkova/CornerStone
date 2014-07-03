@@ -27,3 +27,9 @@ canvas {
 #second-toolbox {
     left:1000px;
 }
+
+#logo {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+  }
