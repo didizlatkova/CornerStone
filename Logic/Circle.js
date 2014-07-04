@@ -1,4 +1,6 @@
 /// <reference path="../Math/Math.js" />
+/// <reference path="Point.js" />
+/// <reference path="Line.js" />
 
 var CornerStone = CornerStone || {};
 
@@ -14,6 +16,8 @@ CornerStone.Circle = function (start, end, points) {
 
 CornerStone.Circle.prototype = function () {
     var math = new CornerStone.Math(),
+        line = new CornerStone.Line(),
+        point = new CornerStone.Point(),
 
     drawCircle = function (ctx, x1, y1, x2, y2) {
         if (x1 == undefined) {
@@ -38,8 +42,30 @@ CornerStone.Circle.prototype = function () {
     },
 
     activateContextMenu = function () {
-        // no context menu for circles (for now)
-        CornerStone.contextmenu = false;
+        CornerStone.contextmenu = true;
+        var that = this;
+
+        var menu = [{
+            name: 'начертай радиус',
+            fun: function () {
+                drawRadius.call(that, CornerStone.context);
+                $('body').contextMenu('close');
+            }
+        }, {
+            name: 'начертай диаметър',
+            fun: function () {
+                drawDiameter.call(that, CornerStone.context);
+                $('body').contextMenu('close');
+            }
+        }, {
+            name: 'начертай център',
+            fun: function () {
+                drawCenter.call(that, CornerStone.context);
+                $('body').contextMenu('close');
+            }
+        }];
+
+        $('body').contextMenu(menu, { triggerOn: 'contextmenu' });
     },
 
     startDrag = function (ev) {
@@ -76,7 +102,19 @@ CornerStone.Circle.prototype = function () {
             this.dragging = false;
         }
         this.dragData = null;
-    };
+    },
+
+    drawRadius = function (ctx) {
+        line.draw(ctx, Math.floor(this.points[0][0]), Math.floor(this.points[0][1]), this.center.x, this.center.y);
+    },
+
+    drawDiameter = function (ctx) {
+        line.draw(ctx, Math.floor(this.points[0][0]), Math.floor(this.points[0][1]), Math.floor(this.center.x - this.radius), this.center.y);
+    },
+
+    drawCenter = function (ctx) {        
+        point.draw(ctx, this.center.x, this.center.y);
+    }
 
     return {
         startDrag: startDrag,

@@ -5,7 +5,7 @@ CornerStone.Math = function () {
 };
 
 CornerStone.Math.prototype = function () {
-    var getPointsForLine = function (x1, y1, x2, y2, n) {
+    getPointsForLine = function (x1, y1, x2, y2, n) {
         if (x1 == x2) {
             if (y1 == y2) {
                 return;
@@ -34,7 +34,24 @@ CornerStone.Math.prototype = function () {
         return result;
     };
 
-    var calcStraightLine = function (x1, y1, x2, y2) {
+    calcSlope = function (x1, y1, x2, y2) {
+        if (x1 != x2) {
+            return (y2 - y1) / (x2 - x1);
+        }
+
+        return 0;
+    }
+
+    calcIntercept = function (x1, y1, x2, y2) {
+        if (x1 != x2) {
+            var slope = this.calcSlope(x1, y1, x2, y2);
+            return y1 - slope * x1;
+        }
+
+        return 0;
+    }
+
+    calcStraightLine = function (x1, y1, x2, y2) {
         var coordinatesArray = new Array();
         // Define differences and error check
         var dx = Math.abs(x2 - x1);
@@ -62,7 +79,7 @@ CornerStone.Math.prototype = function () {
         return coordinatesArray;
     };
 
-    var calcCircle = function (x0, y0, radius) {
+    calcCircle = function (x0, y0, radius) {
         var coordinatesArray = new Array();
         var x = radius, y = 0;
         var radiusError = 1 - x;
@@ -89,7 +106,7 @@ CornerStone.Math.prototype = function () {
         return coordinatesArray;
     };
 
-    var calcFilledCircle = function (x0, y0, radius) {
+    calcFilledCircle = function (x0, y0, radius) {
         var coordinatesArray = new Array();
         var x = radius;
         var y = 0;
@@ -120,20 +137,20 @@ CornerStone.Math.prototype = function () {
         return coordinatesArray;
     }
 
-    var calcDistance = function (x1, y1, x2, y2) {
+    calcDistance = function (x1, y1, x2, y2) {
         return Math.sqrt(Math.pow(y2 - y1, 2) + Math.pow(x2 - x1, 2));
-    };
+    },
 
-    var factorial = function (n) {
+    factorial = function (n) {
         var result = 1;
         for (var i = 1; i <= n; i++) {
             result *= i;
         }
 
         return result;
-    };
+    },
 
-    var calcHermite = function (x, n, count) {
+    calcHermite = function (x, n, count) {
         if (f[points[x]] == f[points[n]]) {
             if (count == 0) {
                 return f[points[x]] / factorial(count);
@@ -148,15 +165,15 @@ CornerStone.Math.prototype = function () {
             result.push(diff);
             return diff;
         }
-    };
+    },
 
-    var calcSimpleCurve = function (x0, y0, x1, y1, x2, y2) {
+    calcSimpleCurve = function (x0, y0, x1, y1, x2, y2) {
         f = new Array();
         fprim = new Array();
-        
+
         f[x1] = y1;
         f[x2] = y2;
-                
+
         var a = y0 - y1;
         var b = x0 - x1;
         var c = y0 - y2;
@@ -164,7 +181,7 @@ CornerStone.Math.prototype = function () {
 
         fprim[x1] = a / b;
         fprim[x2] = -c / d;
-                
+
         points = [x1, x1, x2, x2];
         result = [f[x1]];
 
@@ -178,18 +195,20 @@ CornerStone.Math.prototype = function () {
         }
 
         return resultArr;
-    };
+    },
 
-    var calcCurvePoints = function (x1, x2, x3, x4, x, startX1, startX2) {
+    calcCurvePoints = function (x1, x2, x3, x4, x, startX1, startX2) {
         return x1 + x2 * (x - startX1) + x3 * (x - startX1) * (x - startX1) + x4 * (x - startX1) * (x - startX1) * (x - startX2);
-    };
+    }
 
     return {
         calcDistance: calcDistance,
+        calcSlope: calcSlope,
+        calcIntercept: calcIntercept,
         getPointsForLine: getPointsForLine,
         calcStraightLine: calcStraightLine,
         calcCircle: calcCircle,
         calcFilledCircle: calcFilledCircle,
-        calcSimpleCurve: calcSimpleCurve
+        calcSimpleCurve: calcSimpleCurve,
     };
 }();

@@ -36,8 +36,18 @@ CornerStone.Line.prototype = function () {
         },
 
         activateContextMenu = function () {
-            // no context menu for lines
-            CornerStone.contextmenu = false;
+            CornerStone.contextmenu = true;
+            var that = this;
+
+            var menu = [{
+                name: 'направи безкрайна права',
+                fun: function () {
+                    drawInfiniteLine.call(that, CornerStone.context);
+                    $('body').contextMenu('close');
+                }
+            }];
+
+            $('body').contextMenu(menu, { triggerOn: 'contextmenu' });
         }
 
     startDrag = function (ev) {
@@ -72,7 +82,35 @@ CornerStone.Line.prototype = function () {
             this.dragging = false;
         }
         this.dragData = null;
-    };
+    },
+
+    drawInfiniteLine = function (ctx) {
+        x1 = this.startPoint.x;
+        y1 = this.startPoint.y;
+        x2 = this.endPoint.x;
+        y2 = this.endPoint.y;
+
+        var b = math.calcIntercept(x1, y1, x2, y2);
+        var slope = math.calcSlope(x1, y1, x2, y2);
+
+        if (slope == 0) {
+            if (x1 == x2) {
+                drawLine(ctx, x1, 0, x1, 700);
+            } else {
+                drawLine(ctx, 0, y1, 900, y1);
+            }
+        } else if (slope < 0) {
+            var startX = -b / slope;
+            var endY = b;
+
+            drawLine(ctx, Math.floor(startX), 0, 0, Math.floor(endY));
+        } else {
+            var startY = b;
+            var endX = (700 - b) / slope;
+
+            drawLine(ctx, 0, Math.floor(startY), Math.floor(endX), 700);
+        }
+    }
 
     return {
         startDrag: startDrag,
