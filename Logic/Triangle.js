@@ -1,6 +1,7 @@
 /// <reference path="../Math/Math.js" />
 /// <reference path="Line.js" />
 /// <reference path="Point.js" />
+/// <reference path="Circle.js" />
 
 var CornerStone = CornerStone || {};
 
@@ -16,6 +17,7 @@ CornerStone.Triangle.prototype = function () {
     var math = new CornerStone.Math(),
         line = new CornerStone.Line(),
         point = new CornerStone.Point(),
+        circle = new CornerStone.Circle(),
         clickCount = 0,
         dragData = new Array();
 
@@ -76,6 +78,45 @@ CornerStone.Triangle.prototype = function () {
         line.draw(ctx, Math.round(this.first.x + proportion * xDelta), Math.round(this.first.y + proportion * yDelta), this.third.x, this.third.y);
     },
 
+    drawOutsideCircle = function (ctx) {
+        var x1 = this.first.x;
+        var y1 = this.first.y;
+        var x2 = this.second.x;
+        var y2 = this.second.y;
+        var x3 = this.third.x;
+        var y3 = this.third.y;
+
+        var slope1 = math.calcSlope(x1, y1, x2, y2);
+        var slope2 = math.calcSlope(x2, y2, x3, y3);
+
+        var x = (slope1 * slope2 * (y3 - y1) + slope1 * (x2 + x3) - slope2 * (x1 + x2)) / (2 * (slope1 - slope2));
+        var y = -1 / slope1 * (x - (x1 + x2) / 2) + (y1 + y2) / 2;
+
+        circle.draw(ctx, Math.floor(x), Math.floor(y), x1, y1);
+    },
+
+    drawInsideCircle = function (ctx) {
+        var x1 = this.first.x;
+        var y1 = this.first.y;
+        var x2 = this.second.x;
+        var y2 = this.second.y;
+        var x3 = this.third.x;
+        var y3 = this.third.y;
+
+        var a = math.calcDistance(x2, y2, x3, y3);
+        var b = math.calcDistance(x1, y1, x3, y3);
+        var c = math.calcDistance(x1, y1, x2, y2);
+
+        var P = a + b + c;
+        var p = (a + b + c) / 2;
+
+        var x = (a * x1 + b * x2 + c * x3) / P;
+        var y = (a * y1 + b * y2 + c * y3) / P;
+        var radius = Math.sqrt((p - a) * (p - b) * (p - c) / p);
+
+        circle.drawWithRadius(ctx, Math.floor(x), Math.floor(y), radius);
+    }
+
     activateContextMenu = function () {
         CornerStone.contextmenu = true;
         var that = this;
@@ -96,6 +137,18 @@ CornerStone.Triangle.prototype = function () {
             name: 'начертай ъглополовяща',
             fun: function () {
                 drawBisector.call(that, CornerStone.context);
+                $('body').contextMenu('close');
+            }
+        }, {
+            name: 'начертай описана окръжност',
+            fun: function () {
+                drawOutsideCircle.call(that, CornerStone.context);
+                $('body').contextMenu('close');
+            }
+        }, {
+            name: 'начертай вписана окръжност',
+            fun: function () {
+                drawInsideCircle.call(that, CornerStone.context);
                 $('body').contextMenu('close');
             }
         }];
@@ -125,7 +178,7 @@ CornerStone.Triangle.prototype = function () {
             clickCount = 0;
             CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         }
-    };
+    },
 
     move = function (ev) {
         ev = ev || event;
@@ -136,7 +189,7 @@ CornerStone.Triangle.prototype = function () {
             CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
             drawTempTriangle(CornerStone.tempContext, ev.clientX, ev.clientY);
         };
-    };
+    }
 
     return {
         click: click,

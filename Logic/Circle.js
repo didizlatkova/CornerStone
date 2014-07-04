@@ -29,6 +29,10 @@ CornerStone.Circle.prototype = function () {
             var radius = math.calcDistance(x1, y1, x2, y2);
         }
 
+        drawCircleWithRadius(ctx, x1, y1, radius);
+    },
+
+    drawCircleWithRadius = function (ctx, x1, y1, radius) {
         var points = math.calcCircle(x1, y1, radius);
 
         if (points) {
@@ -39,7 +43,7 @@ CornerStone.Circle.prototype = function () {
             }
         }
         return points;
-    },
+    }
 
     activateContextMenu = function () {
         CornerStone.contextmenu = true;
@@ -121,6 +125,7 @@ CornerStone.Circle.prototype = function () {
         drag: drag,
         stopDrag: stopDrag,
         draw: drawCircle,
+        drawWithRadius : drawCircleWithRadius,
         activateContextMenu: activateContextMenu
     };
 }();
