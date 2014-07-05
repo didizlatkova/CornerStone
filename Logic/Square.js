@@ -17,7 +17,7 @@ CornerStone.Square = function (start, end, points) {
 CornerStone.Square.prototype = function () {
     var math = new CornerStone.Math(),
         line = new CornerStone.Line(),
-        circle = new CornerStone.Circle()
+        circle = new CornerStone.Circle(),
 
     drawSquare = function (context, x1, y1, x2, y2) {
         if (x1 == undefined) {
@@ -67,7 +67,7 @@ CornerStone.Square.prototype = function () {
         ];
 
         $('body').contextMenu(menu, { triggerOn: 'contextmenu' });
-    }
+    },
 
     startDrag = function (ev) {
         ev = ev || event;

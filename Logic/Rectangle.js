@@ -17,7 +17,7 @@ CornerStone.Rectangle = function (start, end, points) {
 CornerStone.Rectangle.prototype = function () {
     var math = new CornerStone.Math(),
         line = new CornerStone.Line(),
-        circle = new CornerStone.Circle()
+        circle = new CornerStone.Circle(),
 
     drawRectangle = function (context, x1, y1, x2, y2) {
         if (x1 == undefined) {

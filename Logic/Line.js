@@ -16,7 +16,7 @@ CornerStone.Line.prototype = function () {
     var math = new CornerStone.Math(),
         LINE_PARTS = 1000,
 
-        drawLine = function (ctx, x1, y1, x2, y2) {
+    drawLine = function (ctx, x1, y1, x2, y2) {
             if (x1 == undefined) {
                 x1 = this.startPoint.x;
                 y1 = this.startPoint.y;
@@ -35,7 +35,7 @@ CornerStone.Line.prototype = function () {
             return points;
         },
 
-        activateContextMenu = function () {
+    activateContextMenu = function () {
             CornerStone.contextmenu = true;
             var that = this;
 
@@ -48,7 +48,7 @@ CornerStone.Line.prototype = function () {
             }];
 
             $('body').contextMenu(menu, { triggerOn: 'contextmenu' });
-        }
+        },
 
     startDrag = function (ev) {
         ev = ev || event;

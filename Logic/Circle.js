@@ -29,7 +29,7 @@ CornerStone.Circle.prototype = function () {
             var radius = math.calcDistance(x1, y1, x2, y2);
         }
 
-        drawCircleWithRadius(ctx, x1, y1, radius);
+        return drawCircleWithRadius(ctx, x1, y1, radius);
     },
 
     drawCircleWithRadius = function (ctx, x1, y1, radius) {
@@ -116,7 +116,7 @@ CornerStone.Circle.prototype = function () {
         line.draw(ctx, Math.floor(this.points[0][0]), Math.floor(this.points[0][1]), Math.floor(this.center.x - this.radius), this.center.y);
     },
 
-    drawCenter = function (ctx) {        
+    drawCenter = function (ctx) {
         point.draw(ctx, this.center.x, this.center.y);
     }
 
@@ -125,7 +125,7 @@ CornerStone.Circle.prototype = function () {
         drag: drag,
         stopDrag: stopDrag,
         draw: drawCircle,
-        drawWithRadius : drawCircleWithRadius,
+        drawWithRadius: drawCircleWithRadius,
         activateContextMenu: activateContextMenu
     };
 }();

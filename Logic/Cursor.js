@@ -5,24 +5,21 @@ CornerStone.Cursor = function () {
 };
 
 CornerStone.Cursor.prototype = function () {
-    //we should probably be checking which button is clicked
-    //some other time
-
     startDrag = function (ev) {
-        // to do: implement
+        // do nothing
     },
 
     drag = function (ev, context) {
-        // to do: implement
+        // do nothing
     },
 
     stopDrag = function (ev) {
-        // to do: implement
-    };
+        // do nothing
+    },
 
     click = function (ev) {
         makeSelection(ev.clientX, ev.clientY);
-    };
+    },
 
     makeSelection = function (x, y) {
         for (var collection in elements) {
