@@ -142,6 +142,11 @@ $(function () {
         }
     });
 
+    $('#save').click(function () {
+        var dataURL = CornerStone.canvas.toDataURL();
+        this.href = dataURL;            
+    });
+
     $(document).click(function (ev) {
         if (CornerStone.selection) {
             var shouldRemoveSelection = true;
