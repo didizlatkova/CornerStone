@@ -19,7 +19,7 @@ CornerStone.Trapezoid.prototype = function () {
         point = new CornerStone.Point(),
         clickCount = 0,
         dragData = new Array(),
-        circle = new CornerStone.Circle()
+        circle = new CornerStone.Circle(),
 
     drawTrapezoid = function (ctx) {
         if (dragData[0] == undefined) {
@@ -48,7 +48,25 @@ CornerStone.Trapezoid.prototype = function () {
     },
 
     activateContextMenu = function () {
-        CornerStone.contextmenu = false;
+        CornerStone.contextmenu = true;
+        var that = this;
+
+        var menu = [{
+            name: 'начертай / диагонал',
+            fun: function () {
+                drawRightDiagonal.call(that, CornerStone.context);
+                $('body').contextMenu('close');
+            }
+        }, {
+            name: 'начертай \\ диагонал',
+            fun: function () {
+                drawLeftDiagonal.call(that, CornerStone.context);
+                $('body').contextMenu('close');
+            }
+        }
+        ];
+
+        $('body').contextMenu(menu, { triggerOn: 'contextmenu' });
     },
 
     click = function (ev) {
@@ -58,12 +76,14 @@ CornerStone.Trapezoid.prototype = function () {
             dragData.push([ev.clientX, ev.clientY]);
             clickCount++;
         } else if (clickCount == 3) {
-
             var a = new CornerStone.Point(dragData[0][0], dragData[0][1]),
                 b = new CornerStone.Point(dragData[1][0], dragData[1][1]),
                 c = new CornerStone.Point(dragData[2][0], dragData[2][1]),
-                d = new CornerStone.Point(last.x, last.y),
-                points = drawTrapezoid(CornerStone.context);
+                last = calcLastPoint(a.x, a.y, b.x, b.y, c.x, c.y, ev.clientX, ev.clientY),
+                d = new CornerStone.Point(Math.floor(last.x), Math.floor(last.y));
+
+            dragData.push([d.x, d.y]);
+            var points = drawTrapezoid(CornerStone.context);
 
             point.draw(CornerStone.context, d.x, d.y);
 
@@ -80,7 +100,7 @@ CornerStone.Trapezoid.prototype = function () {
             clickCount = 0;
             CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         }
-    };
+    },
 
     move = function (ev) {
         ev = ev || event;
@@ -95,37 +115,66 @@ CornerStone.Trapezoid.prototype = function () {
             CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
             drawTempTrapezoid(CornerStone.tempContext, ev.clientX, ev.clientY);
         } ;
-    };
+    },
 
     calcLastPoint = function (x1, y1, x2, y2, x3, y3, clientX, clientY) {
         var opt = {
             x: x3 - x2 + x1,
             y: y3 - y2 + y1
-        }, slope;
-        console.log(Math.abs(opt.x - clientX), Math.abs(opt.y - clientY));
-        if (Math.abs(opt.x - clientX) < Math.abs(opt.y - clientY)) {
-            if (x3 - x2 != 0) {
-                slope = (clientX - x1) / (x3 - x2);
-                console.log("this");
-                return {
-                    x: clientX,
-                    y: y1 - slope * (y2 - y3)
-                };
+        }, slope, results = [],
+        args = [[{x: x1, y:y1}, opt, {x: clientX, y: clientY}],[{x: x3, y:y3}, opt, {x: clientX, y: clientY}]];
+
+        for (var i = 0; i < args.length; i++) {
+            var xDelta = args[i][1].x - args[i][0].x,
+                yDelta = args[i][1].y - args[i][0].y;
+
+            if ((xDelta == 0) && (yDelta == 0)) {
+                return; //illegal
             }
-        } else {
-            if (y2 - y1 != 0) {
-                slope = (y3 - clientY) / (y2 - y1);
-                console.log("that", x3 - slope * (x2 - x1), clientY);
-                return {
-                    x: x3 - slope * (x2 - x1),
-                    y: clientY
-                };
+
+            var u = ((args[i][2].x - args[i][0].x) * xDelta + (args[i][2].y - args[i][0].y) * yDelta) / (xDelta * xDelta + yDelta * yDelta),
+                closestPoint = [args[i][0].x + u * xDelta, args[i][0].y + u * yDelta];
+            results[i] = {x: closestPoint[0], y: closestPoint[1]};
+        
+
+            if ((results[i].x - args[i][0].x) * xDelta < 0) {
+                results[i].x = args[i][0].x;
+            }
+            if ((results[i].y - args[i][0].y) * yDelta < 0) {
+                results[i].y = args[i][0].y;
             }
         }
-        return {
-            x: 0,
-            y: 0
-        }
+        var minDist = Math.abs(results[0].x - clientX),
+            minIndex = 0;
+        for (var i = 0; i < results.length; i++) {
+            if (Math.abs(results[i].x - clientX) < minDist) {
+                minDist = Math.abs(results[i].x - clientX);
+                minIndex = i;
+            }
+
+            if (Math.abs(results[i].y - clientY) < minDist) {
+                minDist = Math.abs(results[i].y - clientY);
+                minIndex = i;
+            }
+        };
+
+        return results[minIndex];
+    },
+
+    drawRightDiagonal = function (ctx) {
+        var x1 = this.second.x;
+        var y1 = this.second.y;
+        var x2 = this.forth.x;
+        var y2 = this.forth.y;
+        line.draw(ctx, x1, y1, x2, y2);
+    },
+
+    drawLeftDiagonal = function (ctx) {
+        var x1 = this.first.x;
+        var y1 = this.first.y;
+        var x2 = this.third.x;
+        var y2 = this.third.y;
+        line.draw(ctx, x1, y1, x2, y2);
     }
 
     return {
