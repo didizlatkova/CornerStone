@@ -1,4 +1,4 @@
-/// <reference path="../Math/Math.js" />
+п»ї/// <reference path="../Math/Math.js" />
 /// <reference path="Line.js" />
 /// <reference path="Point.js" />
 /// <reference path="Circle.js" />
@@ -122,31 +122,31 @@ CornerStone.Triangle.prototype = function () {
         var that = this;
 
         var menu = [{
-            name: 'начертай височина',
+            name: 'РЅР°С‡РµСЂС‚Р°Р№ РІРёСЃРѕС‡РёРЅР°',
             fun: function () {
                 drawHeight.call(that, CornerStone.context);
                 $('body').contextMenu('close');
             }
         }, {
-            name: 'начертай медиана',
+            name: 'РЅР°С‡РµСЂС‚Р°Р№ РјРµРґРёР°РЅР°',
             fun: function () {
                 drawMedian.call(that, CornerStone.context);
                 $('body').contextMenu('close');
             }
         }, {
-            name: 'начертай ъглополовяща',
+            name: 'РЅР°С‡РµСЂС‚Р°Р№ СЉРіР»РѕРїРѕР»РѕРІСЏС‰Р°',
             fun: function () {
                 drawBisector.call(that, CornerStone.context);
                 $('body').contextMenu('close');
             }
         }, {
-            name: 'начертай описана окръжност',
+            name: 'РЅР°С‡РµСЂС‚Р°Р№ РѕРїРёСЃР°РЅР° РѕРєСЂСЉР¶РЅРѕСЃС‚',
             fun: function () {
                 drawOutsideCircle.call(that, CornerStone.context);
                 $('body').contextMenu('close');
             }
         }, {
-            name: 'начертай вписана окръжност',
+            name: 'РЅР°С‡РµСЂС‚Р°Р№ РІРїРёСЃР°РЅР° РѕРєСЂСЉР¶РЅРѕСЃС‚',
             fun: function () {
                 drawInsideCircle.call(that, CornerStone.context);
                 $('body').contextMenu('close');

@@ -1,4 +1,4 @@
-/// <reference path="../Math/Math.js" />
+п»ї/// <reference path="../Math/Math.js" />
 /// <reference path="Line.js" />
 /// <reference path="Point.js" />
 
@@ -51,13 +51,13 @@ CornerStone.Parallelogram.prototype = function () {
         var that = this;
 
         var menu = [{
-            name: 'начертай / диагонал',
+            name: 'РЅР°С‡РµСЂС‚Р°Р№ / РґРёР°РіРѕРЅР°Р»',
             fun: function () {
                 drawRightDiagonal.call(that, CornerStone.context);
                 $('body').contextMenu('close');
             }
         }, {
-            name: 'начертай \\ диагонал',
+            name: 'РЅР°С‡РµСЂС‚Р°Р№ \\ РґРёР°РіРѕРЅР°Р»',
             fun: function () {
                 drawLeftDiagonal.call(that, CornerStone.context);
                 $('body').contextMenu('close');

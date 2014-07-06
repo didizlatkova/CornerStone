@@ -1,4 +1,4 @@
-/// <reference path="../Math/Math.js" />
+п»ї/// <reference path="../Math/Math.js" />
 /// <reference path="Point.js" />
 /// <reference path="Line.js" />
 
@@ -50,19 +50,19 @@ CornerStone.Circle.prototype = function () {
         var that = this;
 
         var menu = [{
-            name: 'начертай радиус',
+            name: 'РЅР°С‡РµСЂС‚Р°Р№ СЂР°РґРёСѓСЃ',
             fun: function () {
                 drawRadius.call(that, CornerStone.context);
                 $('body').contextMenu('close');
             }
         }, {
-            name: 'начертай диаметър',
+            name: 'РЅР°С‡РµСЂС‚Р°Р№ РґРёР°РјРµС‚СЉСЂ',
             fun: function () {
                 drawDiameter.call(that, CornerStone.context);
                 $('body').contextMenu('close');
             }
         }, {
-            name: 'начертай център',
+            name: 'РЅР°С‡РµСЂС‚Р°Р№ С†РµРЅС‚СЉСЂ',
             fun: function () {
                 drawCenter.call(that, CornerStone.context);
                 $('body').contextMenu('close');

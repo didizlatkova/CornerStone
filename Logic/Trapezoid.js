@@ -1,4 +1,4 @@
-/// <reference path="../Math/Math.js" />
+﻿/// <reference path="../Math/Math.js" />
 /// <reference path="Line.js" />
 /// <reference path="Point.js" />
 
