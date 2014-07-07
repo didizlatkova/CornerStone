@@ -127,25 +127,31 @@ CornerStone.Triangle.prototype = function () {
         var menu = [{
             name: 'начертай височина',
             fun: function () {
-                var x = CornerStone.Triangle.ClickedX;
-                var y = CornerStone.Triangle.ClickedY;
-                var x1 = that.first.x;
-                var y1 = that.first.y;
-                var x2 = that.second.x;
-                var y2 = that.second.y;
-                var x3 = that.third.x;
-                var y3 = that.third.y;
+                var x = CornerStone.Triangle.ClickedX,
+                    y = CornerStone.Triangle.ClickedY,
+                    coordinates = [{x: that.first.x, y: that.first.y},
+                    {x: that.second.x, y: that.second.y},
+                    {x: that.third.x, y: that.third.y}];
 
-                if (x > Math.min(x1, x2) && y > y2) {
-                    drawHeight.call(that, CornerStone.context, x1, y1, x2, y2, x3, y3);
+                for (var i = 0; i < coordinates.length; i++) {
+                    var j = i + 1, l = i + 2;
+                    if(i == coordinates.length - 1) {
+                        j = 0;
+                        l = 1;
+                    } else if (i == coordinates.length - 2) {
+                        l = 0;
+                    };
+                    var linePoints = math.calcStraightLine(coordinates[i].x, coordinates[i].y, coordinates[j].x, coordinates[j].y);
+                    for (var k = 0; k < linePoints.length; k++) {
+                        if (Math.abs(linePoints[k][0] - x) < 6 && Math.abs(linePoints[k][1] - y) < 6) {
+                            drawHeight.call(that, CornerStone.context, coordinates[i].x, coordinates[i].y, coordinates[j].x, coordinates[j].y, coordinates[l].x, coordinates[l].y);
+                            $('body').contextMenu('close');
+                            return;
+                        }
+                    }
                 }
-                else if (x < Math.max(x1, x3) && y > y3) {
-                    drawHeight.call(that, CornerStone.context, x1, y1, x3, y3, x2, y2);
-                }
-                else if (x > x3 && x < x2 && y < Math.min(y2, y3)) {
-                    drawHeight.call(that, CornerStone.context, x3, y3, x2, y2, x1, y1);
-                }
-                // drawHeight.call(that, CornerStone.context);
+
+                drawHeight.call(that, CornerStone.context, coordinates[0].x, coordinates[0].y, coordinates[1].x, coordinates[1].y, coordinates[2].x, coordinates[3].y);
                 $('body').contextMenu('close');
             }
         }, {
