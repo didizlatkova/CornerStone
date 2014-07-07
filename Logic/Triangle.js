@@ -1,6 +1,7 @@
 ﻿/// <reference path="../Math/Math.js" />
 /// <reference path="Line.js" />
 /// <reference path="Point.js" />
+/// <reference path="../ContextMenu/contextMenu.js" />
 /// <reference path="Circle.js" />
 
 var CornerStone = CornerStone || {};
@@ -12,6 +13,9 @@ CornerStone.Triangle = function (a, b, c, points) {
     this.points = points;
     this.state = false;
 };
+
+CornerStone.Triangle.ClickedX = 0;
+CornerStone.Triangle.ClickedY = 0;
 
 CornerStone.Triangle.prototype = function () {
     var math = new CornerStone.Math(),
@@ -43,19 +47,19 @@ CornerStone.Triangle.prototype = function () {
         line.draw(ctx, dragData[0][0], dragData[0][1], x, y);
     },
 
-    drawHeight = function (ctx) {
+    drawHeight = function (ctx, x1, y1, x2, y2, x3, y3) {
         //TODO move and refactor this + draw line for not-acute triangles
-        var xDelta = this.second.x - this.first.x,
-            yDelta = this.second.y - this.first.y;
+        var xDelta = x2 - x1,
+            yDelta = y2 - y1;
 
         if ((xDelta == 0) && (yDelta == 0)) {
             return; //illegal
         }
 
-        var u = ((this.third.x - this.first.x) * xDelta + (this.third.y - this.first.y) * yDelta) / (xDelta * xDelta + yDelta * yDelta),
-            closestPoint = [this.first.x + u * xDelta, this.first.y + u * yDelta];
+        var u = ((x3 - x1) * xDelta + (y3 - y1) * yDelta) / (xDelta * xDelta + yDelta * yDelta),
+            closestPoint = [x1 + u * xDelta, y1 + u * yDelta];
 
-        line.draw(ctx, Math.round(closestPoint[0]), Math.round(closestPoint[1]), this.third.x, this.third.y);
+        line.draw(ctx, Math.round(closestPoint[0]), Math.round(closestPoint[1]), x3, y3);
     },
 
     drawMedian = function (ctx) {
@@ -120,11 +124,28 @@ CornerStone.Triangle.prototype = function () {
     activateContextMenu = function () {
         CornerStone.contextmenu = true;
         var that = this;
-
         var menu = [{
             name: 'начертай височина',
             fun: function () {
-                drawHeight.call(that, CornerStone.context);
+                var x = CornerStone.Triangle.ClickedX;
+                var y = CornerStone.Triangle.ClickedY;
+                var x1 = that.first.x;
+                var y1 = that.first.y;
+                var x2 = that.second.x;
+                var y2 = that.second.y;
+                var x3 = that.third.x;
+                var y3 = that.third.y;
+
+                if (x > Math.min(x1, x2) && y > y2) {
+                    drawHeight.call(that, CornerStone.context, x1, y1, x2, y2, x3, y3);
+                }
+                else if (x < Math.max(x1, x3) && y > y3) {
+                    drawHeight.call(that, CornerStone.context, x1, y1, x3, y3, x2, y2);
+                }
+                else if (x > x3 && x < x2 && y < Math.min(y2, y3)) {
+                    drawHeight.call(that, CornerStone.context, x3, y3, x2, y2, x1, y1);
+                }
+                // drawHeight.call(that, CornerStone.context);
                 $('body').contextMenu('close');
             }
         }, {
@@ -153,43 +174,50 @@ CornerStone.Triangle.prototype = function () {
             }
         }];
 
-        $('body').contextMenu(menu, { triggerOn: 'contextmenu' });
+        $('body').contextMenu(menu, {
+            triggerOn: 'contextmenu',
+            onOpen: function (data, event) {
+                CornerStone.Triangle.ClickedX = event.clientX;
+                CornerStone.Triangle.ClickedY = event.clientY;
+            }
+        });
+
     },
 
-    click = function (ev) {
-        ev = ev || event;
-        point.draw(CornerStone.context, ev.clientX, ev.clientY);
-        dragData.push([ev.clientX, ev.clientY]);
-        clickCount++;
-        if (clickCount == 3) {
-            var a = new CornerStone.Point(dragData[0][0], dragData[0][1]),
-                b = new CornerStone.Point(dragData[1][0], dragData[1][1]),
-                c = new CornerStone.Point(dragData[2][0], dragData[2][1]),
-                    points = drawTriangle(CornerStone.context);
+click = function (ev) {
+    ev = ev || event;
+    point.draw(CornerStone.context, ev.clientX, ev.clientY);
+    dragData.push([ev.clientX, ev.clientY]);
+    clickCount++;
+    if (clickCount == 3) {
+        var a = new CornerStone.Point(dragData[0][0], dragData[0][1]),
+            b = new CornerStone.Point(dragData[1][0], dragData[1][1]),
+            c = new CornerStone.Point(dragData[2][0], dragData[2][1]),
+                points = drawTriangle(CornerStone.context);
 
-            definingPoints.push(a);
-            definingPoints.push(b);
-            definingPoints.push(c);
-            elements.triangles.push(new CornerStone.Triangle(a, b, c, points));
-            this.first = a;
-            this.second = b;
-            this.third = c;
+        definingPoints.push(a);
+        definingPoints.push(b);
+        definingPoints.push(c);
+        elements.triangles.push(new CornerStone.Triangle(a, b, c, points));
+        this.first = a;
+        this.second = b;
+        this.third = c;
 
-            clickCount = 0;
-            CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        }
-    },
-
-    move = function (ev) {
-        ev = ev || event;
-        if (clickCount == 1) {
-            CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-            line.draw(CornerStone.tempContext, dragData[0][0], dragData[0][1], ev.clientX, ev.clientY);
-        } else if (clickCount == 2) {
-            CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-            drawTempTriangle(CornerStone.tempContext, ev.clientX, ev.clientY);
-        };
+        clickCount = 0;
+        CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     }
+},
+
+move = function (ev) {
+    ev = ev || event;
+    if (clickCount == 1) {
+        CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        line.draw(CornerStone.tempContext, dragData[0][0], dragData[0][1], ev.clientX, ev.clientY);
+    } else if (clickCount == 2) {
+        CornerStone.tempContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        drawTempTriangle(CornerStone.tempContext, ev.clientX, ev.clientY);
+    };
+}
 
     return {
         click: click,
