@@ -62,24 +62,24 @@ CornerStone.Triangle.prototype = function () {
         line.draw(ctx, Math.round(closestPoint[0]), Math.round(closestPoint[1]), x3, y3);
     },
 
-    drawMedian = function (ctx) {
+    drawMedian = function (ctx, x1, y1, x2, y2, x3, y3) {
         var midpoint = {
-            x: (this.first.x + this.second.x) / 2,
-            y: (this.first.y + this.second.y) / 2
+            x: (x1 + x2) / 2,
+            y: (y1 + y2) / 2
         }
 
-        line.draw(ctx, Math.round(midpoint.x), Math.round(midpoint.y), this.third.x, this.third.y);
+        line.draw(ctx, Math.round(midpoint.x), Math.round(midpoint.y), x3, y3);
     },
 
-    drawBisector = function (ctx) {
-        var a = math.calcDistance(this.first.x, this.first.y, this.third.x, this.third.y);
-        var b = math.calcDistance(this.second.x, this.second.y, this.third.x, this.third.y);
+    drawBisector = function (ctx, x1, y1, x2, y2, x3, y3) {
+        var a = math.calcDistance(x1, y1, x3, y3);
+        var b = math.calcDistance(x2, y2, x3, y3);
 
-        var xDelta = this.second.x - this.first.x,
-            yDelta = this.second.y - this.first.y;
+        var xDelta = x2 - x1,
+            yDelta = y2 - y1;
         var proportion = a / (a + b);
 
-        line.draw(ctx, Math.round(this.first.x + proportion * xDelta), Math.round(this.first.y + proportion * yDelta), this.third.x, this.third.y);
+        line.draw(ctx, Math.round(x1 + proportion * xDelta), Math.round(y1 + proportion * yDelta), x3, y3);
     },
 
     drawOutsideCircle = function (ctx) {
@@ -151,19 +151,62 @@ CornerStone.Triangle.prototype = function () {
                     }
                 }
 
-                drawHeight.call(that, CornerStone.context, coordinates[0].x, coordinates[0].y, coordinates[1].x, coordinates[1].y, coordinates[2].x, coordinates[2].y);
                 $('body').contextMenu('close');
             }
         }, {
             name: 'начертай медиана',
             fun: function () {
-                drawMedian.call(that, CornerStone.context);
+                var x = CornerStone.Triangle.ClickedX,
+                    y = CornerStone.Triangle.ClickedY,
+                    coordinates = [{x: that.first.x, y: that.first.y},
+                    {x: that.second.x, y: that.second.y},
+                    {x: that.third.x, y: that.third.y}];
+
+                for (var i = 0; i < coordinates.length; i++) {
+                    var j = i + 1, l = i + 2;
+                    if(i == coordinates.length - 1) {
+                        j = 0;
+                        l = 1;
+                    } else if (i == coordinates.length - 2) {
+                        l = 0;
+                    };
+                    var linePoints = math.calcStraightLine(coordinates[i].x, coordinates[i].y, coordinates[j].x, coordinates[j].y);
+                    for (var k = 0; k < linePoints.length; k++) {
+                        if (Math.abs(linePoints[k][0] - x) < 6 && Math.abs(linePoints[k][1] - y) < 6) {
+                            drawMedian.call(that, CornerStone.context, coordinates[i].x, coordinates[i].y, coordinates[j].x, coordinates[j].y, coordinates[l].x, coordinates[l].y);
+                            $('body').contextMenu('close');
+                            return;
+                        }
+                    }
+                }
                 $('body').contextMenu('close');
             }
         }, {
             name: 'начертай ъглополовяща',
             fun: function () {
-                drawBisector.call(that, CornerStone.context);
+                var x = CornerStone.Triangle.ClickedX,
+                    y = CornerStone.Triangle.ClickedY,
+                    coordinates = [{x: that.first.x, y: that.first.y},
+                    {x: that.second.x, y: that.second.y},
+                    {x: that.third.x, y: that.third.y}];
+
+                for (var i = 0; i < coordinates.length; i++) {
+                    var j = i + 1, l = i + 2;
+                    if(i == coordinates.length - 1) {
+                        j = 0;
+                        l = 1;
+                    } else if (i == coordinates.length - 2) {
+                        l = 0;
+                    };
+                    var linePoints = math.calcStraightLine(coordinates[i].x, coordinates[i].y, coordinates[j].x, coordinates[j].y);
+                    for (var k = 0; k < linePoints.length; k++) {
+                        if (Math.abs(linePoints[k][0] - x) < 6 && Math.abs(linePoints[k][1] - y) < 6) {
+                            drawBisector.call(that, CornerStone.context, coordinates[i].x, coordinates[i].y, coordinates[j].x, coordinates[j].y, coordinates[l].x, coordinates[l].y);
+                            $('body').contextMenu('close');
+                            return;
+                        }
+                    }
+                }
                 $('body').contextMenu('close');
             }
         }, {
