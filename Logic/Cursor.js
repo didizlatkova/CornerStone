@@ -1,4 +1,7 @@
-﻿var CornerStone = CornerStone || {};
+﻿/// <reference path="../ContextMenu/contextMenu.js" />
+
+
+var CornerStone = CornerStone || {};
 
 CornerStone.Cursor = function () {
 
@@ -36,7 +39,7 @@ CornerStone.Cursor.prototype = function () {
 
                         // activate context menu for selected element
                         if (element.activateContextMenu) {
-                            element.activateContextMenu();
+                            element.activateContextMenu();                            
                         };
 
                         // set selection vars
