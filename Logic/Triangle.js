@@ -151,7 +151,7 @@ CornerStone.Triangle.prototype = function () {
                     }
                 }
 
-                drawHeight.call(that, CornerStone.context, coordinates[0].x, coordinates[0].y, coordinates[1].x, coordinates[1].y, coordinates[2].x, coordinates[3].y);
+                drawHeight.call(that, CornerStone.context, coordinates[0].x, coordinates[0].y, coordinates[1].x, coordinates[1].y, coordinates[2].x, coordinates[2].y);
                 $('body').contextMenu('close');
             }
         }, {
